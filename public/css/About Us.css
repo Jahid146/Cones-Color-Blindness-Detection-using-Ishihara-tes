@@ -1,0 +1,56 @@
+html, body {
+    height: 100%;
+  }
+  .body-content {
+    flex: 1; /* This makes the content section expand to fill the remaining space */
+  }
+  .header {
+    margin-bottom: 20px;
+    background-color: gray;
+  }
+  .logo {
+    padding-left: 35px;
+    color: #ffffff;
+  }
+  .navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+  }
+  .navbar-brand{
+    font-family: "Ubuntu";
+    font-size: 2.5rem;
+    font-weight: bold;
+    margin-left: 6px;
+  }
+  
+  .nav-items {
+    display: flex;
+    align-items: center;
+  }
+  .container{
+    font-family: "Ubuntu";
+    font-size: 1.5rem;;
+  }
+  .last-content {
+    background-color: #808080;
+    display: flex;
+    flex-direction: column; /* Stack the footer elements vertically */
+  }
+  
+  .last {
+    text-align: center;
+    padding: 20px; /* Add padding for better appearance */
+  }
+  
+  .terms {
+    color: #ffffff;
+  }
+  
+  /* Add this media query to ensure the footer remains at the bottom on smaller screens */
+  @media screen and (max-height: 800px) {
+    .body-content {
+      flex: none; /* Prevent content from expanding on smaller screens */
+    }
+  }

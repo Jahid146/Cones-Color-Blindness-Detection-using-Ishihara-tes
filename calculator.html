@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Color Blindness Calculator</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Merriweather+Sans&family=Montserrat&family=Sacramento&family=Ubuntu+Condensed&display=swap" rel="stylesheet">
+    <!-- BootStrap CSS -->
+    <link rel="stylesheet" href="/css/calculator style.css">
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
+    <!-- BootStrap JavaScript -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+
+</head>
+
+<body>
+
+    <div class="first">
+        <nav class="navbar navbar-expand-lg navbar-dark">
+          <p class="navbar-brand navbar-expand-lg logo">Cones👁️</a>
+             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav ms-auto">
+                <li class="nav-item">
+                    <button type="button" class="nav-link" >Exit</button>
+                </li>
+                <li class="nav-item">
+                    <button type="button" class="nav-link" >Restart</button>
+                </li>
+
+            </ul>
+         </div>
+        </nav>
+    </div>
+
+    <div class="flex-container">
+        <div class="cal-head">
+            <img class ="ig"src="/images/2-9/3.jpg">
+        </div>
+
+        <div class="center">
+            <div class="cal-body">
+                <button type="button" class="button">1</button>
+                <button type="button" class="button">2</button>
+                <button type="button" class="button">3</button>
+            </div>
+
+            <div class="cal-body">
+                <button type="button" class="button">4</button>
+                <button type="button" class="button">5</button>
+                <button type="button" class="button">6</button>
+            </div>
+
+            <div class="cal-body ">
+                <button type="button" class="button">7</button>
+                <button type="button" class="button">8</button>
+                <button type="button" class="button">9</button>
+            </div>
+
+            <div class="cal-body cen">
+                <button type="button" class="button UN">Nothing</button>
+            </div>
+
+            <div class="cal-body cen">
+                <button type="button" class="button UN">Unsure</button>
+            </div>
+        </div>
+    </div>
+    <div class="last-content">
+        <div class="last">
+          <p class="terms">© 2023 Cones👁️ Ltd. All Rights Reserved</p>
+        </div>
+      </div>
+      <script>
+        let images = ["public/images/2-9/3.jpg", "public/images/2-9/5.jpg", "public/images/2-9/6.jpg", "public/images/2-9/8.jpg", "public/images/2-9/15.jpg", "public/images/2-9/29.jpg", "public/images/2-9/57.jpg"];
+        let currentImageIndex = 0;
+        let timer;
+        const imageElement = document.getElementById("image");
+        const messageElement = document.getElementById("message");
+        const backButton = document.getElementById("backButton");
+    
+        const buttons = [
+            document.getElementById("button1"),
+            document.getElementById("button2"),
+            document.getElementById("button3"),
+            document.getElementById("button4"),
+            document.getElementById("button5"),
+            document.getElementById("button6"),
+            document.getElementById("button7"),
+            document.getElementById("button8"),
+            document.getElementById("button9"),
+            document.getElementById("buttonNothing"),
+            document.getElementById("buttonUnsure")
+        ];
+    
+        function showNextImage() {
+            currentImageIndex = (currentImageIndex + 1) % images.length;
+            imageElement.src = images[currentImageIndex];
+            messageElement.style.display = "none";
+            backButton.style.display = "none";
+            timer = setTimeout(showMessage, 5000);
+        }
+    
+        function showMessage() {
+            imageElement.style.display = "none";
+            messageElement.style.display = "block";
+            backButton.style.display = "block";
+        }
+    
+        function buttonClick(buttonValue) {
+            clearTimeout(timer);
+            if (buttonValue === 'nothing' || buttonValue === 'unsure') {
+                showMessage();
+            } else {
+                showNextImage();
+            }
+        }
+    
+        backButton.addEventListener("click", () => {
+            currentImageIndex = (currentImageIndex - 1 + images.length) % images.length;
+            imageElement.src = images[currentImageIndex];
+            imageElement.style.display = "block";
+            messageElement.style.display = "none";
+            backButton.style.display = "none";
+            timer = setTimeout(showMessage, 5000);
+        });
+    
+        // Add a click event listener to the "Please click here" button
+        backButton.addEventListener("click", () => {
+            showNextImage(); // Show the next image
+        });
+    
+        for (let i = 0; i < buttons.length; i++) {
+            buttons[i].addEventListener("click", () => buttonClick(buttons[i].id));
+        }
+    
+        // Display initial image
+        showNextImage();
+    </script>
+      
+</body>
+
+</html>

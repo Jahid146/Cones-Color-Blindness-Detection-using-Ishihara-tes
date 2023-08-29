@@ -1,0 +1,130 @@
+
+.first{
+    
+    background-color: #808080;
+    margin-bottom: 40px;
+}
+.logo{
+  padding-left: 35px;
+  color: #ffffff;
+}
+.start{
+    font-family: "Montserrat-Black", sans-serif;
+    margin-left: 10px;
+    color: antiquewhite;
+    padding-left: 35px;
+    padding-right: 10px;
+}
+.navbar{
+    padding-bottom: 4.5rem;
+}
+/* .custom-navbar {
+  background-color: #ffffff;
+  position: fixed;
+  z-index: 1;
+  width: 100%;
+  height: 50px;
+  text-align: center;
+  vertical-align: middle;
+  line-height: 50px;
+  top: 0px;
+} */
+.navbar-brand{
+    font-family: "Ubuntu";
+    font-size: 2.5rem;
+    font-weight: bold;
+    margin-left: 6px;
+}
+.nav-item{
+    padding: 0 18px;
+}
+.nav-link{
+    font-size: 1.2rem;
+    font-family: "Montserrat-Light";
+}
+.nav1{
+  position: relative;
+}
+
+.dalton{
+    width: 60%;
+    border-radius: 50%;
+
+}
+.question{
+    margin-top: 10px;
+    background-color: #fff;
+}
+.f-pera{
+    font-size: 1.5rem;
+}
+.order{
+  font-size: 1.5rem;
+}
+.bold{
+  font-weight: bold;
+}
+#question-section{
+    margin: 7% 15%;
+}
+.first-image{
+  display: block;
+  margin-top: 50px;
+  margin-left: auto;
+  margin-right: auto;
+}
+.f{
+  font-size: 2rem;
+  text-align: center;
+}
+.form-control{
+  width: 50%;
+  margin: auto;
+  display: block;
+  border: 3px solid rgb(0, 0, 0);
+
+}
+.last_logo{
+  padding-left: 70px;
+  padding-top: 170px;
+}
+.last_quote{
+  font-size: 1.2rem;
+  padding-left: 70px;
+  
+}
+.centered-content {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  
+}
+
+.icon {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+}
+.icon a {
+  font-size: 50px;
+  padding-right: 10px;
+  color: #000;
+  text-decoration: none;
+  transition: color 0.3s;
+}
+.icon a:hover {
+  color: #000000;
+}
+.last-content{
+  background-color: #808080;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.last{
+    text-align: center;
+  
+}
+.terms{
+  color: #ffffff;
+}

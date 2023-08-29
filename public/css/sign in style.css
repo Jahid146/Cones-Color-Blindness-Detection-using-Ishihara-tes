@@ -1,0 +1,187 @@
+body {
+    margin: 0;
+    padding: 0;
+    
+  }
+  
+  .header {
+    background-color: gray;
+  }
+  
+  .navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+  }
+  
+  .logo {
+    padding-left: 35px;
+    color: #ffffff;
+  }
+  .navbar-brand{
+    font-family: "Ubuntu";
+    font-size: 2.5rem;
+    font-weight: bold;
+    margin-left: 6px;
+  }
+  
+  .nav-items {
+    display: flex;
+    align-items: center;
+  }
+  
+  .sign-in-bar {
+    font-family: "Ubuntu";
+    border: 1px solid white;
+    background-color: white;
+    font-size: 24px;
+    cursor: pointer;
+    box-shadow: 0 6px 6px rgba(7, 7, 7, 0.6);
+    padding: 10px 20px;
+    transition: background-color 0.3s, color 0.3s, transform 0.3s;
+  }
+  
+  .sign-in-bar:hover {
+    background-color: gray;
+    color: white;
+    transform: translateY(-3px); /* Move button up slightly on hover */
+  }
+
+  h2{
+    font-family: "Montserrat-Black", sans-serif;
+    text-align: center;
+    padding-bottom: 20px;
+
+    
+  }
+  
+  .content {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: calc(100vh - 60px);
+    min-width:auto;
+    background-color: #f0f0f0;
+    flex-direction: column; /* Added this line */
+  }
+  
+  .sign-up-template {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0px 0px 10px rgba(117, 117, 117, 0.2);
+  }
+  
+  .social-icons {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+  }
+  
+  .social-icon {
+    font-size: 30px;
+    margin: 0 10px;
+    color: #333;
+    cursor: pointer;
+    transition: color 0.3s;
+  }
+  
+  .social-icon:hover {
+    color: #f39c12;
+  }
+  
+  .sign-up-form {
+    
+    margin-top: 20px;
+    background-color: transparent;
+    transition: margin-top 0.3s ease-in-out, background-color 0.3s ease-in-out;
+    padding: 20px; /* Add padding for spacing */
+  }
+  
+  .sign-up-form:hover {
+    margin-top: 10px; /* Adjust the value as needed */
+    background-color: rgba(255, 255, 255, 0.1); /* Transparent white background on hover */
+  }
+  
+  .form-group {
+    position: relative;
+    margin-bottom: 10px;
+  }
+  
+  .form-group label {
+    display: block;
+    font-weight: bold;
+  }
+  
+  .form-group input {
+    width: 100%;
+    padding: 5px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+  }
+  
+  .form-group input[type="submit"] {
+    background-color: #333;
+    color: #fff;
+    cursor: pointer;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+  }
+  
+  .form-group input[type="submit"]:hover {
+    background-color: #555;
+  }
+  .input-wrapper {
+    display: flex;
+    align-items: center;
+  }
+  
+  .toggle-icon {
+    cursor: pointer;
+    margin-left: -30px; /* Adjust as needed */
+  }
+ 
+  .or{
+    padding-top: 20px;
+    font-weight: bold;
+    font-size: 1.2rem;
+    text-align: center;
+ 
+  }
+  .icon.bi-centered{
+    display: flex;
+    justify-content: center;
+    margin-top: 10px; /* Adjust as needed */
+    
+  }
+  .icon.bi-centered a {
+    
+    font-size: 30px;
+    /* padding-right: 10px; */
+    margin: 0 5px;
+    color: #000;
+    text-decoration: none;
+    transition: color 0.3s;
+  }
+  
+  .forgot{
+    text-decoration: none;
+    text-align: center;
+    
+  }
+  .last-content{
+    background-color: #808080;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  .last{
+      text-align: center;
+    
+  }
+  .terms{
+    color: #ffffff;
+  }
+  

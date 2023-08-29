@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign In</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Merriweather+Sans&family=Montserrat&family=Sacramento&family=Ubuntu+Condensed&display=swap" rel="stylesheet">
+    <!-- BootStrap CSS -->
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
+    <link rel="stylesheet" href="/css/sign in style.css">
+    <!-- BootStrap JavaScript -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+    <!-- my javascript -->
+    <script src="script.js"></script>
+
+
+</head>
+<body>
+    <div class="header">
+      <nav class="navbar navbar-expand-lg navbar-dark">
+      <p class="navbar-brand navbar-expand-lg logo">Cones👁️</p>
+        <!-- <button type="button" class="sign-in-bar">Sign In</button> -->
+      </nav>
+      </div>
+
+      <div class="content">
+        <div class="sign-up-template">
+          <h2>SIGN IN TO CONES👁️</h2>
+
+          <form class="sign-up-form">
+            <div class="form-group">
+              <label for="email">Email Address:</label>
+              <input type="email" id="email" name="email" required>
+            </div>
+            <div class="form-group">
+              <label for="password">Password:</label>
+              <div class="input-wrapper">
+                <input type="password" id="password" name="password" required>
+                <i class="bi bi-eye-slash toggle-icon" id="togglePassword"></i>
+              </div>
+            </div>
+            <div class="form-group">
+              <input type="submit" value="Log In">
+            </div>
+
+            <div class="or">OR</div>
+            <div class="icon bi-centered">
+                <a href="#" class="bi-google"></a>
+                <a href="#" class="bi-facebook"></a>
+
+            </div>
+            <br>
+
+            <div class="forgot">
+                 <a class="forgot" href="">Forget password?</a>
+            </div>
+          </form>
+        </div>
+      </div>
+      <div class="last-content">
+        <div class="last">
+          <p class="terms">© 2023 Cones👁️ Ltd. All Rights Reserved</p>
+        </div>
+    </div>
+      <!-- javascript for toggle password vissibility -->
+      <script>
+        const togglePassword = document.querySelector("#togglePassword");
+        const password = document.querySelector("#password");
+
+        togglePassword.addEventListener("click", function () {
+            // toggle the type attribute
+            const type = password.getAttribute("type") === "password" ? "text" : "password";
+            password.setAttribute("type", type);
+
+            // toggle the icon
+            this.classList.toggle("bi-eye")});
+      </script>
+
+</body>
+</html>
