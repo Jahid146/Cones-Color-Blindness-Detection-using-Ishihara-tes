@@ -94,11 +94,12 @@ function sendVerificationMail(email){
 
 // });
 
-app.get("/google-auth", (req, res) => {
-  // Redirect the user to the Firebase authentication URL
+// app.get("/google-auth", (req, res) => {
+//   // Redirect the user to the Firebase authentication URL
+//   console.log("Here")
   
-  res.redirect("/");
-});
+//   res.redirect("/");
+// });
 
 
 // const provider = new FacebookAuthProvider();

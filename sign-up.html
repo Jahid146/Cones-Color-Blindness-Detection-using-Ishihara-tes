@@ -147,6 +147,8 @@
           .then((result) => {
             // Handle successful sign-in
             console.log("Google user signed in:", result.user.email);
+            window.location.href = "http://localhost:3000/";
+
             // Redirect or perform other actions
           })
           .catch((error) => {
