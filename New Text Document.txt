@@ -1,35 +1,73 @@
-// Function to initiate Facebook authentication
-function loginWithFacebook() {
-  const provider = new firebase.auth.FacebookAuthProvider();
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <!-- ... (other head elements) ... -->
 
-  auth
-    .signInWithPopup(provider)
-    .then((result) => {
-      // Handle successful sign-in
-      console.log("Facebook user signed in:", result.user.displayName);
-      window.location.href = "http://localhost:3000/"; // Replace with your homepage URL
-    })
-    .catch((error) => {
-      // Handle authentication error
-      console.error("Facebook authentication error:", error.code, error.message);
-      // Handle error as needed
-    });
-}
+  <!-- Include the Firebase and Facebook SDKs -->
+  <script src="https://www.gstatic.com/firebasejs/9.0.1/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.0.1/firebase-auth.js"></script>
+  <script src="https://connect.facebook.net/en_US/sdk.js"></script>
 
-// Find the Facebook sign-up link by its ID
-const facebookSignUpLink = document.getElementById("facebook-login");
+  <!-- Initialize Firebase -->
+  <script>
+    const firebaseConfig = {
+      apiKey: "YOUR_API_KEY",
+      authDomain: "YOUR_AUTH_DOMAIN",
+      projectId: "YOUR_PROJECT_ID",
+      storageBucket: "YOUR_STORAGE_BUCKET",
+      messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
+      appId: "YOUR_APP_ID"
+    };
 
-// Attach a click event listener to the link
-if (facebookSignUpLink) {
-  facebookSignUpLink.addEventListener("click", (event) => {
-    event.preventDefault(); // Prevent default link behavior
-    loginWithFacebook(); // Call the Facebook authentication function
-  });
-}
+    // Initialize Firebase
+    const app = firebase.initializeApp(firebaseConfig);
+    const auth = app.auth();
+  </script>
 
+  <!-- ... (other head elements) ... -->
+</head>
+<body>
+  <!-- ... (your HTML content) ... -->
 
-<a
-  id="facebook-login"
-  class="bi bi-facebook"
-  href="#"
-></a>
+  <!-- Facebook Login Button -->
+  <a id="facebook-login" class="bi bi-facebook" href="#">Facebook Login</a>
+
+  <!-- ... (your HTML content) ... -->
+
+  <script>
+    // Function to initiate Facebook authentication
+    function loginWithFacebook() {
+      const provider = new firebase.auth.FacebookAuthProvider();
+
+      auth.signInWithPopup(provider)
+        .then((result) => {
+          // Handle successful sign-in
+          console.log("Facebook user signed in:", result.user.displayName);
+
+          // Redirect the user to the homepage
+          window.location.href = "http://localhost:3000/"; // Replace with your homepage URL
+        })
+        .catch((error) => {
+          // Handle authentication error
+          console.error("Facebook authentication error:", error.code, error.message);
+          // Handle error as needed
+        });
+    }
+
+    // Find the Facebook login button by its ID
+    const facebookLoginButton = document.getElementById("facebook-login");
+
+    // Attach a click event listener to the button
+    if (facebookLoginButton) {
+      facebookLoginButton.addEventListener("click", (event) => {
+        event.preventDefault(); // Prevent default link behavior
+        loginWithFacebook(); // Call the Facebook authentication function
+      });
+    }
+  </script>
+</body>
+</html>
+
+Ensuring Color Vision - Verify Your Mail
+
+If you didn't receive the email, please check your spam folder.

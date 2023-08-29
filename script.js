@@ -33,14 +33,14 @@ app.post("/sign-up", (req, res) => {
   if (password !== confirmPassword) {
     res.redirect("/sign-up");
     // return res.redirect("/signup"); // Redirect with an error message or handle the error
-}
+  }
 
   createUserWithEmailAndPassword(auth, email, password)
     .then((userCredential) => {
       const user = userCredential.user;
       console.log("User registered:", user.email);
       sendVerificationMail(user.email);
-      res.redirect("/check-user"); // Redirect after successful registration
+      res.redirect("/verify-mail"); // Redirect after successful registration
     })
     .catch((error) => {
       const errorCode = error.code;
@@ -48,21 +48,21 @@ app.post("/sign-up", (req, res) => {
       console.error("Registration error:", errorCode, errorMessage);
       res.redirect("/sign-up"); // Redirect with error message, if needed
     });
-  });
+});
 
-function sendVerificationMail(email){
+function sendVerificationMail(email) {
   const action = {
     url: `http://localhost:3000/verify?email=${email}`,
     handleCodeInApp: true
   };
 
   sendSignInLinkToEmail(auth, email, action)
-  .then(()=>{
-    console.log("Verification Email Sent");
-  })
-  .catch((error)=>{
-    console.error("Error Sending verification email: ", error);
-  });
+    .then(() => {
+      console.log("Verification Email Sent");
+    })
+    .catch((error) => {
+      console.error("Error Sending verification email: ", error);
+    });
 }
 
 
@@ -72,7 +72,7 @@ app.get("/", function (req, res) {
   res.sendFile(__dirname + "/index.html");
 });
 
-app.get("/check-email", (req, res)=>{
+app.get("/check-email", (req, res) => {
   res.sendFile(__dirname + "/check-email")
 })
 
@@ -97,4 +97,11 @@ app.get("/verify-mail", function (req, res) {
 
 app.listen(port, () => {
   console.log(`Server is running on port ${port}`);
+});
+app.get("/verify", (req, res) => {
+  // Extract the email from the query parameter
+  const email = req.query.email;
+
+  // Redirect the user to the home page after verification
+  res.redirect("/");
 });
