@@ -88,7 +88,10 @@
                 placeholder="confirmPassword"
                 required
               />
-              <i class="bi bi-eye-slash toggle-icon" id="confirmtogglePassword"></i>
+              <i
+                class="bi bi-eye-slash toggle-icon"
+                id="confirmtogglePassword"
+              ></i>
             </div>
           </div>
 
@@ -108,12 +111,12 @@
 
           <div class="or">OR</div>
           <div class="icon bi-centered" method="POST">
-            <a id="google" class="bi bi-google" href="/google-auth"></a>
-            <a
+            <a id="google" class="bi bi-google large-icon" href="#"></a>
+            <!-- <a
               id="facebook-login"
               class="bi bi-facebook"
               href="/facebook-signup"
-            ></a>
+            ></a> -->
           </div>
         </form>
       </div>
@@ -173,6 +176,7 @@
         });
       }
 
+
       const togglePassword = document.querySelector("#togglePassword");
       const password = document.querySelector("#password");
 
@@ -186,19 +190,22 @@
         this.classList.toggle("bi-eye");
       });
 
-      const confirmtogglePassword = document.querySelector("#confirmtogglePassword"); // Corrected ID
+      const confirmtogglePassword = document.querySelector(
+        "#confirmtogglePassword"
+      ); // Corrected ID
       const confirmpassword = document.querySelector("#confirmpassword");
 
-     confirmtogglePassword.addEventListener("click", function () {
-  // toggle the type attribute
-     const type =
-        confirmpassword.getAttribute("type") === "password" ? "text" : "password";
+      confirmtogglePassword.addEventListener("click", function () {
+        // toggle the type attribute
+        const type =
+          confirmpassword.getAttribute("type") === "password"
+            ? "text"
+            : "password";
         confirmpassword.setAttribute("type", type);
 
-  // toggle the icon
-      this.classList.toggle("bi-eye");
-    });
-
+        // toggle the icon
+        this.classList.toggle("bi-eye");
+      });
     </script>
   </body>
 </html>

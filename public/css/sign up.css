@@ -75,14 +75,14 @@ body {
     box-shadow: 0px 0px 10px rgba(117, 117, 117, 0.2);
   }
 
-  .social-icons {
+  /* .social-icons {
     display: flex;
     justify-content: center;
     margin-top: 20px;
   }
 
   .social-icon {
-    font-size: 30px;
+    font-size: 50px;
     margin: 0 10px;
     color: #333;
     cursor: pointer;
@@ -91,6 +91,10 @@ body {
 
   .social-icon:hover {
     color: #f39c12;
+  } */
+
+  .large-icon{
+    font-size: large;
   }
 
   .sign-up-form {

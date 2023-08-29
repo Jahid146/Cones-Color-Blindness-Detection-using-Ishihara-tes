@@ -30,15 +30,18 @@ html, body {
     align-items: center;
   }
   .container{
+    text-align: center;
     font-family: "Ubuntu";
-    font-size: 1.5rem;;
+    font-size: 1.5rem;
+    margin-bottom: 30px;
   }
-  .last-content {
-    background-color: #808080;
-    display: flex;
-    flex-direction: column; /* Stack the footer elements vertically */
+  .first_image{
+    width: 60%;
+
   }
-  
+  .image2{
+    width: 10%;
+  }
   .last-content{
     background-color: #808080;
     display: flex;

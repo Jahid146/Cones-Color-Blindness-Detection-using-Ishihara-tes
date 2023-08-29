@@ -65,66 +65,6 @@ function sendVerificationMail(email){
   });
 }
 
-//   // // Function to initiate Google authentication
-//   // function loginWithGoogle() {
-//   //   const provider = new firebase.auth.GoogleAuthProvider();
-//   //   auth.signInWithPopup(provider)
-//   //     .then((result) => {
-//   //       // Handle successful sign-in
-//   //       console.log("Google user signed in:", result.user.email);
-//   //       // Redirect or perform other actions
-//   //     })
-//   //     .catch((error) => {
-//   //       // Handle authentication error
-//   //       console.error("Google authentication error:", error.code, error.message);
-//   //       // Handle error as needed
-//   //     });
- 
-
-// //   // Get the Google sign-up anchor link
-// //   const googleSignUpLink = document.getElementById("google");
-
-// //   // Add event listener to trigger Google authentication
-// //   if (googleSignUpLink) {
-// //     googleSignUpLink.addEventListener("click", (event) => {
-// //       event.preventDefault(); // Prevent default link behavior
-// //       loginWithGoogle(); // Call the Google authentication function
-// //     });
-// //   }
-
-// });
-
-// app.get("/google-auth", (req, res) => {
-//   // Redirect the user to the Firebase authentication URL
-//   console.log("Here")
-  
-//   res.redirect("/");
-// });
-
-
-// const provider = new FacebookAuthProvider();
-
-// Handle Facebook authentication
-// app.get("/facebook-signup", (req, res) => {
-//   console.log('button clicked ');
-//   signInWithPopup(auth, provider)
-//     .then((result) => {
-//       const user = result.user;
-//       const credential = FacebookAuthProvider.credentialFromResult(result);
-//       const token = credential.accessToken;
-
-
-
-//       console.log("User signed in with Facebook:", user.email);
-//       res.redirect("/"); // Redirect after successful authentication
-//     })
-//     .catch((error) => {
-//       const errorCode = error.code;
-//       const errorMessage = error.message;
-//       console.error("Facebook authentication error:", errorCode, errorMessage);
-//       res.redirect("/"); // Redirect with error message, if needed
-//     });
-// });
 
 
 
@@ -141,15 +81,18 @@ app.get("/sign-up", function (req, res) {
 });
 
 app.get("/sign-in", function (req, res) {
-  res.sendFile(__dirname + "/sign in.html");
+  res.sendFile(__dirname + "/sign-in.html");
 });
 
 app.get("/About-us", function (req, res) {
-  res.sendFile(__dirname + "/About us.html");
+  res.sendFile(__dirname + "/About-us.html");
 });
 
 app.get("/calculator", function (req, res) {
   res.sendFile(__dirname + "/calculator.html");
+});
+app.get("/verify-mail", function (req, res) {
+  res.sendFile(__dirname + "/verify-mail.html");
 });
 
 app.listen(port, () => {

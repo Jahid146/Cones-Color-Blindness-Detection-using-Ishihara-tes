@@ -1,31 +1,35 @@
-const firebaseConfig = {
-  apiKey: "your-api-key",
-  authDomain: "your-auth-domain",
-  projectId: "your-project-id",
-  storageBucket: "your-storage-bucket",
-  messagingSenderId: "your-messaging-sender-id",
-  appId: "your-app-id",
-};
-
-const app = firebase.initializeApp(firebaseConfig);
-const auth = app.auth();
-
-// Function to initiate Google authentication
-function loginWithGoogle() {
-  const provider = new firebase.auth.GoogleAuthProvider();
+// Function to initiate Facebook authentication
+function loginWithFacebook() {
+  const provider = new firebase.auth.FacebookAuthProvider();
 
   auth
     .signInWithPopup(provider)
     .then((result) => {
       // Handle successful sign-in
-      console.log("Google user signed in:", result.user.email);
-
-      // Redirect the user to the homepage
-      window.location.href = "your-homepage-url";
+      console.log("Facebook user signed in:", result.user.displayName);
+      window.location.href = "http://localhost:3000/"; // Replace with your homepage URL
     })
     .catch((error) => {
       // Handle authentication error
-      console.error("Google authentication error:", error.code, error.message);
+      console.error("Facebook authentication error:", error.code, error.message);
       // Handle error as needed
     });
 }
+
+// Find the Facebook sign-up link by its ID
+const facebookSignUpLink = document.getElementById("facebook-login");
+
+// Attach a click event listener to the link
+if (facebookSignUpLink) {
+  facebookSignUpLink.addEventListener("click", (event) => {
+    event.preventDefault(); // Prevent default link behavior
+    loginWithFacebook(); // Call the Facebook authentication function
+  });
+}
+
+
+<a
+  id="facebook-login"
+  class="bi bi-facebook"
+  href="#"
+></a>
