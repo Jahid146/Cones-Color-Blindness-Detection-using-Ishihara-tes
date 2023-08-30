@@ -1,73 +1,124 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <!-- ... (other head elements) ... -->
+const express = require("express");
+const bodyParser = require("body-parser");
+const { initializeApp } = require("firebase/app");
+const { getAuth, createUserWithEmailAndPassword, sendSignInLinkToEmail, signInWithEmailAndPassword } = require("firebase/auth");
 
-  <!-- Include the Firebase and Facebook SDKs -->
-  <script src="https://www.gstatic.com/firebasejs/9.0.1/firebase-app.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.0.1/firebase-auth.js"></script>
-  <script src="https://connect.facebook.net/en_US/sdk.js"></script>
+const app = express();
+const port = process.env.PORT || 3000;
 
-  <!-- Initialize Firebase -->
-  <script>
-    const firebaseConfig = {
-      apiKey: "YOUR_API_KEY",
-      authDomain: "YOUR_AUTH_DOMAIN",
-      projectId: "YOUR_PROJECT_ID",
-      storageBucket: "YOUR_STORAGE_BUCKET",
-      messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
-      appId: "YOUR_APP_ID"
-    };
+app.use(express.static("public"));
+app.use(bodyParser.urlencoded({ extended: true }));
+app.set("view engine", "ejs");
 
-    // Initialize Firebase
-    const app = firebase.initializeApp(firebaseConfig);
-    const auth = app.auth();
-  </script>
+// Your Firebase configuration
+const firebaseConfig = {
+  apiKey: "AIzaSyAZ7854htYYYmyH0qhWAwieRW2B7PTFdzg",
+  authDomain: "cones-450e8.firebaseapp.com",
+  projectId: "cones-450e8",
+  storageBucket: "cones-450e8.appspot.com",
+  messagingSenderId: "963595330821",
+  appId: "1:963595330821:web:78f7d4b936b19e87c8c36c"
+};
 
-  <!-- ... (other head elements) ... -->
-</head>
-<body>
-  <!-- ... (your HTML content) ... -->
+const appFirebase = initializeApp(firebaseConfig);
+const auth = getAuth(appFirebase);
 
-  <!-- Facebook Login Button -->
-  <a id="facebook-login" class="bi bi-facebook" href="#">Facebook Login</a>
+// Handle POST request for user registration
+app.post("/sign-up", (req, res) => {
+  const email = req.body.email1;
+  const password = req.body.password1;
+  const confirmPassword = req.body.confirm_password1;
 
-  <!-- ... (your HTML content) ... -->
+  if (password !== confirmPassword) {
+    res.redirect("/sign-up");
+    // return res.redirect("/signup"); // Redirect with an error message or handle the error
+  }
 
-  <script>
-    // Function to initiate Facebook authentication
-    function loginWithFacebook() {
-      const provider = new firebase.auth.FacebookAuthProvider();
+  createUserWithEmailAndPassword(auth, email, password)
+    .then((userCredential) => {
+      const user = userCredential.user;
+      console.log("User registered:", user.email);
+      sendVerificationMail(user.email);
+      res.redirect("/verify-mail"); // Redirect after successful registration
+    })
+    .catch((error) => {
+      const errorCode = error.code;
+      const errorMessage = error.message;
+      console.error("Registration error:", errorCode, errorMessage);
+      res.redirect("/sign-up"); // Redirect with error message, if needed
+    });
+});
 
-      auth.signInWithPopup(provider)
-        .then((result) => {
-          // Handle successful sign-in
-          console.log("Facebook user signed in:", result.user.displayName);
+// Handle POST request for user sign-in
+app.post("/sign-in", function (req, res) {
+  const email = req.body.email2;
+  const password = req.body.password2;
 
-          // Redirect the user to the homepage
-          window.location.href = "http://localhost:3000/"; // Replace with your homepage URL
-        })
-        .catch((error) => {
-          // Handle authentication error
-          console.error("Facebook authentication error:", error.code, error.message);
-          // Handle error as needed
-        });
-    }
+  signInWithEmailAndPassword(auth, email, password)
+    .then((userCredential) => {
+      const user = userCredential.user;
+      console.log("User signed in:", user.email);
+      res.redirect("/"); // Redirect after successful sign-in
+    })
+    .catch((error) => {
+      const errorCode = error.code;
+      const errorMessage = error.message;
+      console.error("Sign-in error:", errorCode, errorMessage);
+      res.redirect("/sign-in"); // Redirect with error message, if needed
+    });
+});
 
-    // Find the Facebook login button by its ID
-    const facebookLoginButton = document.getElementById("facebook-login");
+function sendVerificationMail(email) {
+  const action = {
+    url: `http://localhost:3000/verify?email=${email}`,
+    handleCodeInApp: true
+  };
 
-    // Attach a click event listener to the button
-    if (facebookLoginButton) {
-      facebookLoginButton.addEventListener("click", (event) => {
-        event.preventDefault(); // Prevent default link behavior
-        loginWithFacebook(); // Call the Facebook authentication function
-      });
-    }
-  </script>
-</body>
-</html>
+  sendSignInLinkToEmail(auth, email, action)
+    .then(() => {
+      console.log("Verification Email Sent");
+    })
+    .catch((error) => {
+      console.error("Error Sending verification email: ", error);
+    });
+}
 
-Ensuring Color Vision - Verify Your Mail
+app.get("/", function (req, res) {
+  res.render("index");
+});
 
-If you didn't receive the email, please check your spam folder.
+app.get("/check-email", (req, res) => {
+  res.render("check-email");
+});
+
+app.get("/sign-up", function (req, res) {
+  res.render("sign-up");
+});
+
+app.get("/sign-in", function (req, res) {
+  res.render("sign-in");
+});
+
+app.get("/About-us", function (req, res) {
+  res.render("About-us");
+});
+
+app.get("/calculator", function (req, res) {
+  res.render("calculator");
+});
+
+app.get("/verify-mail", function (req, res) {
+  res.render("verify-mail");
+});
+
+app.listen(port, () => {
+  console.log(`Server is running on port ${port}`);
+});
+
+app.get("/verify", (req, res) => {
+  // Extract the email from the query parameter
+  const email = req.query.email;
+
+  // Redirect the user to the home page after verification
+  res.redirect("/");
+});
