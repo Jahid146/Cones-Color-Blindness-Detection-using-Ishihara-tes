@@ -67,11 +67,12 @@
 #question-section{
     margin: 7% 15%;
 }
-.first-image{
-  display: block;
-  margin-top: 50px;
-  margin-left: auto;
-  margin-right: auto;
+.input-container {
+  display: flex;
+  align-items: center; /* Vertically center elements */
+}
+.input-container img {
+  margin-right: 10px; /* Adjust the margin as needed to separate the image and input */
 }
 .f{
   font-size: 2rem;
@@ -114,6 +115,25 @@
 }
 .icon a:hover {
   color: #000000;
+}
+.user-image {
+  width: 40px; /* Adjust the size as needed */
+  height: 40px; /* Adjust the size as needed */
+}
+
+.dropdown-menu {
+  /* max-width: 200px; Limit the maximum width of the dropdown */
+  text-align: center; /* Center the email address */
+  padding: 0.5rem; /* Add padding to the dropdown menu */
+}
+
+.user-email {
+  word-wrap: break-word; /* Wrap long email addresses */
+  max-width: 100%; /* Ensure email stays within the dropdown */
+}
+
+.dropdown-divider {
+  margin: 0.5rem 0; /* Add margin to the divider */
 }
 .last-content{
   background-color: #808080;

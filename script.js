@@ -1,10 +1,11 @@
 const express = require("express");
 const bodyParser = require("body-parser");
 const { initializeApp } = require("firebase/app");
-const { getAuth, createUserWithEmailAndPassword, sendSignInLinkToEmail, signInWithEmailAndPassword } = require("firebase/auth");
+const { getAuth, createUserWithEmailAndPassword, sendSignInLinkToEmail, signInWithEmailAndPassword, signOut } = require("firebase/auth");
 
 const app = express();
 const port = process.env.PORT || 3000;
+
 
 app.use(express.static("public"));
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -22,7 +23,7 @@ const firebaseConfig = {
 
 const appFirebase = initializeApp(firebaseConfig);
 const auth = getAuth(appFirebase);
-
+    
 // Handle POST request for user registration
 app.post("/sign-up", (req, res) => {
   const email = req.body.email1;
@@ -38,8 +39,7 @@ app.post("/sign-up", (req, res) => {
     .then((userCredential) => {
       const user = userCredential.user;
       console.log("User registered:", user.email);
-      sendVerificationMail(user.email);
-      res.redirect("/verify-mail"); // Redirect after successful registration
+      res.redirect("/sign-in"); // Redirect after successful registration
     })
     .catch((error) => {
       const errorCode = error.code;
@@ -58,7 +58,8 @@ app.post("/sign-in", function (req, res) {
     .then((userCredential) => {
       const user = userCredential.user;
       console.log("User signed in:", user.email); // Use user.email instead of user.email2
-      res.redirect("/"); // Redirect after successful sign-in
+      res.redirect("/")// Redirect after successful sign-in
+      
     })
     .catch((error) => {
       const errorCode = error.code;
@@ -69,21 +70,66 @@ app.post("/sign-in", function (req, res) {
 });
 
 
-function sendVerificationMail(email) {
-  const action = {
-    url: `http://localhost:3000/verify?email=${email}`,
-    handleCodeInApp: true
-  };
 
-  sendSignInLinkToEmail(auth, email, action)
-    .then(() => {
-      console.log("Verification Email Sent");
-    })
-    .catch((error) => {
-      console.error("Error Sending verification email: ", error);
-    });
-}
 
+// auth.onAuthStateChanged((user) => {
+//   const navbarItems = document.getElementById("navbar-items");
+//   navbarItems.innerHTML = `
+//       <li class="nav-item">
+//           <a class="nav-link" href="#one">Contact</a>
+//       </li>
+//       <li class="nav-item">
+//           <a class="nav-link" href="/About-us">About Us</a>
+//       </li>
+//       <li class="nav-item" id="user-profile-nav">
+//           ${
+//               user
+//                   ? `
+//                       <div class="dropdown">
+//                           <a class="nav-link dropdown-toggle" href="#" role="button" id="userDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+//                               <img src="${user.photoURL}" alt="User Profile Image" class="user-image">
+//                           </a>
+//                           <ul class="dropdown-menu" aria-labelledby="userDropdown">
+//                               <li><a class="dropdown-item" href="#">${user.email}</a></li>
+//                               <li><hr class="dropdown-divider"></li>
+//                               <li><a class="dropdown-item" href="#" onclick="handleSignOut()">Log Out</a></li>
+//                           </ul>
+//                       </div>
+//                   `
+//                   : `<a class="nav-link" href="/sign-up">Log in/Sign up</a>`
+//           }
+//       </li>
+//   `;
+// });
+
+// Add the authentication state observer
+// document.addEventListener("DOMContentLoaded", function () {
+//   const navbarItems = document.getElementById("navbar-items");
+//   auth.onAuthStateChanged((user) => {
+//     if (user) {
+//       // User is authenticated
+//       const profileImageURL = user.photoURL ? user.photoURL : "default-image-url";
+
+//       navbarItems.innerHTML = `
+//         <div class="dropdown">
+//             <a class="nav-link dropdown-toggle" href="#" role="button" id="userDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+//                 <img src="${profileImageURL}" alt="User Profile Image" class="user-image">
+//             </a>
+//             <ul class="dropdown-menu" aria-labelledby="userDropdown">
+//                 <li><a class="dropdown-item" href="#">${user.email}</a></li>
+//                 <li><hr class="dropdown-divider"></li>
+//                 <li><a class="dropdown-item" href="#" onclick="handleSignOut()">Log Out</a></li>
+//             </ul>
+//         </div>
+//       `;
+//     } else {
+//       // User is not authenticated
+//       navbarItems.innerHTML = `
+//         <a class="nav-link" href="/sign-up">Log in/Sign up</a>
+//       `;
+//     }
+//   });
+// });
 app.get("/", function (req, res) {
   res.render("index");
 });
@@ -116,10 +162,10 @@ app.listen(port, () => {
   console.log(`Server is running on port ${port}`);
 });
 
-app.get("/verify", (req, res) => {
-  // Extract the email from the query parameter
-  const email = req.query.email;
+// app.get("/verify", (req, res) => {
+//   // Extract the email from the query parameter
+//   const email = req.query.email;
 
-  // Redirect the user to the home page after verification
-  res.redirect("/");
-});
+//   // Redirect the user to the home page after verification
+//   res.redirect("/");
+// });
