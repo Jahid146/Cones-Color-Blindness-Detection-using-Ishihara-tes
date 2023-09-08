@@ -157,6 +157,9 @@ app.get("/calculator", function (req, res) {
 app.get("/verify-mail", function (req, res) {
   res.render("verify-mail");
 });
+app.get("/Voice_interaction", function (req, res) {
+  res.render("Voice_interaction");
+});
 
 app.listen(port, () => {
   console.log(`Server is running on port ${port}`);
