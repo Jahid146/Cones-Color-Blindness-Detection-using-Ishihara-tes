@@ -40,6 +40,12 @@
   "firebase-admin": "^11.10.1",
   
     
+  "install": "^0.13.0",
+  
+    
+  "mongoose": "^7.5.0",
+  
+    
   "require": "^2.4.20"
   
   }
