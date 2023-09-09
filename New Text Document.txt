@@ -1,1 +1,27 @@
-const profileImageURL = user.photoURL || "https://example.com/default-image.jpg";
+<!DOCTYPE html>
+<html>
+<head>
+    <!-- Your existing head content here -->
+
+    <!-- Add these lines for the voice input feature -->
+    <script src="https://cdn.jsdelivr.net/npm/web-speech-api@0.1.2/dist/speech-api.min.js"></script>
+    <style>
+        /* Add any additional CSS styles here */
+        .voice-output {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <!-- Your existing HTML content here -->
+
+    <div class="center">
+        <button type="button" id="startVoiceButton" class="button">Start Voice Input</button>
+        <div id="voiceOutput" class="voice-output"></div>
+        <audio id="voiceAudio" controls style="display: none;"></audio>
+    </div>
+
+    <!-- Your existing JavaScript import statement and other content here -->
+    <script src="script.js"></script>
+</body>
+</html>
