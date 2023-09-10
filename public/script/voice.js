@@ -1,32 +1,83 @@
-let img = ["/images/3.jpg", "/images/5.jpg", "/images/6.jpg", "/images/8.jpg","/images/12.1.jpg","/images/15.jpg","/images/16.jpg","/images/26.jpg","/images/29.jpg"];
+
+let img = [
+  "/images/3.jpg",
+  "/images/5.jpg",
+  "/images/6.jpg",
+  "/images/8.jpg",
+  "/images/12.1.jpg",
+  "/images/15.jpg",
+  "/images/16.jpg",
+  "/images/26.jpg",
+  "/images/29.jpg"
+];
 let currentImageIndex = 0;
 let timer;
 
+// Function to hide the "Start to Click Here" button
+function hideStartButton() {
+  document.getElementById("start").style.display = "none";
+}
+
+// Function to show the "Start to Click Here" button
+function showStartButton() {
+  document.getElementById("start").style.display = "block";
+}
+
 function voice() {
+  // Hide the "Start to Click Here" button when voice recognition starts
+  hideStartButton();
+
   var recognition = new webkitSpeechRecognition();
   recognition.lang = "en-GB";
 
-  recognition.onresult = function(event) {
+  recognition.onresult = function (event) {
     console.log(event);
     var transcript = event.results[0][0].transcript;
     console.log("Transcript:", transcript);
 
-    // Process the transcript here (e.g., display it on the page)
-    // You can replace the alert with your desired functionality
-    // alert("Voice input: " + transcript);
-
-    // Automatically convert the recognized text into speech
-    
-
     // Check if the transcript is a valid number
-    if (isNumber(transcript) ||(transcript == "nothing") ||(transcript == "unsure")) {
+    if (
+      isNumber(transcript) ||
+      transcript == "nothing" ||
+      transcript == "unsure"
+    ) {
       // Number spoken, say the number
       speakText("You said " + transcript);
 
-      // Add a 2-second pause and then say "Ok loading next image"
-      setTimeout(function() {
-        changeImage();
-      }, 2000);
+      // Change the image immediately
+      changeImage();
+      if (isNumber(transcript)) {
+        // Create a JSON object to store the numeric value and user email
+        const dataToStore = {// Pass the user's 
+          numericValue: transcript,
+        };
+        
+      
+        // Convert the JSON object to a string
+        const jsonStr = JSON.stringify(dataToStore);
+      
+        // Use fetch to send this JSON data to your server
+        fetch('/store-numeric-value', {
+          method: 'PUT',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: jsonStr,
+        })
+        .then((response) => {
+          // Handle the response from the server
+          if (response.ok) {
+            console.log("Numeric value successfully sent to server");
+          } else {
+            console.error('Failed to send numeric value to server');
+            // Handle the error
+          }
+        })
+        .catch((error) => {
+          console.error('Error sending numeric value to server:', error);
+          // Handle the error
+        });
+      }
     } else {
       // Not a number, ask the user to try again
       speakText("It is not a valid input, try again");
@@ -34,21 +85,21 @@ function voice() {
   };
 
   // Set a timeout to stop the recognition after 5 seconds
-  setTimeout(function() {
+  setTimeout(function () {
     recognition.stop();
-    // alert("Voice recognition stopped after 5 seconds.");
+
+    // If recognition stops without valid input, show the "Start to Click Here" button again
+    showStartButton();
   }, 5000);
 
   recognition.start();
 }
 
 function speakText(textToSpeak) {
-  // Create a SpeechSynthesisUtterance object
   var speech = new SpeechSynthesisUtterance();
-  speech.lang = "en-US"; // Set the language (you can change this as needed)
+  speech.lang = "en-US";
   speech.text = textToSpeak;
 
-  // Use the browser's built-in text-to-speech engine to speak the text
   window.speechSynthesis.speak(speech);
 }
 
@@ -58,24 +109,24 @@ function changeImage() {
   var imageUrl = img[currentImageIndex];
   document.getElementById("image").src = imageUrl;
 
-  // Add a 2-second pause and then say "Say OK to show the next image"
-  setTimeout(function() {
-   
-  }, 2000);
+  // Set a timeout to show the "Start to Click Here" button again after 10 seconds
+  timer = setTimeout(function () {
+    showStartButton();
+  }, 10000); // 10 seconds (10000 milliseconds)
 }
 
 function isNumber(inputText) {
-  // Use parseFloat to attempt to convert the input text to a number
-  // If it's a valid number, parseFloat returns a number, otherwise, it returns NaN
   return !isNaN(parseFloat(inputText));
 }
 
 // Add an event listener to start voice recognition when the "Start" button is clicked
-document.getElementById("startButton").addEventListener("click", function() {
+document.getElementById("start").addEventListener("click", function () {
+  // Clear the timer if the button is clicked to prevent auto-hiding
+  clearTimeout(timer);
   voice();
 });
 
-// Automatically start voice recognition when the page loads
-window.addEventListener("load", function() {
-  voice();
+// Automatically show the "Start to Click Here" button when the page loads
+window.addEventListener("load", function () {
+  showStartButton();
 });

@@ -1,17 +1,54 @@
-const express = require("express");
-const bodyParser = require("body-parser");
-const { initializeApp } = require("firebase/app");
-const { getAuth, createUserWithEmailAndPassword, sendSignInLinkToEmail, signInWithEmailAndPassword, signOut } = require("firebase/auth");
-
+const express = require('express');
+const bodyParser = require('body-parser');
+const { initializeApp } = require('firebase/app');
+const { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword } = require('firebase/auth');
+const mongoose = require('mongoose');
 const app = express();
+app.use(express.json());
 const port = process.env.PORT || 3000;
+let usermail;
 
 
-app.use(express.static("public"));
+
+
+// User schema
+const userSchema = new mongoose.Schema({
+  email: {
+    type: String,
+    unique: true,
+  },
+  numericValue: [{
+    type: String,
+    unique:true,// Change the data type if needed (e.g., String)
+  }],
+});
+
+
+// User Model
+const User = mongoose.model('User', userSchema);
+
+// Connect to MongoDB
+const connectDB = async () => {
+  try {
+    await mongoose.connect('mongodb://127.0.0.1:27017/Cones', {
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
+    });
+    console.log('DB is connected');
+  } catch (error) {
+    console.log('DB is not connected');
+    console.log(error.message);
+    process.exit(1);
+  }
+};
+
+app.use(express.static('public'));
 app.use(bodyParser.urlencoded({ extended: true }));
-app.set("view engine", "ejs");
+app.set('view engine', 'ejs');
 
-// Your Firebase configuration
+// Initialize Firebase Admin SDK with your service account JSON
+
+
 const firebaseConfig = {
   apiKey: "AIzaSyAZ7854htYYYmyH0qhWAwieRW2B7PTFdzg",
   authDomain: "cones-450e8.firebaseapp.com",
@@ -21,117 +58,108 @@ const firebaseConfig = {
   appId: "1:963595330821:web:78f7d4b936b19e87c8c36c"
 };
 
+// Initialize Firebase Web SDK with your Firebase project configuration
 const appFirebase = initializeApp(firebaseConfig);
 const auth = getAuth(appFirebase);
-    
-// Handle POST request for user registration
-app.post("/sign-up", (req, res) => {
+
+// Handle POST request for user registration with email/password
+app.post('/sign-up', async (req, res) => {
   const email = req.body.email1;
   const password = req.body.password1;
   const confirmPassword = req.body.confirm_password1;
 
   if (password !== confirmPassword) {
-    res.redirect("/sign-up");
-    // return res.redirect("/signup"); // Redirect with an error message or handle the error
+    return res.redirect('/sign-up');
   }
 
-  createUserWithEmailAndPassword(auth, email, password)
-    .then((userCredential) => {
-      const user = userCredential.user;
-      console.log("User registered:", user.email);
-      res.redirect("/sign-in"); // Redirect after successful registration
-    })
-    .catch((error) => {
-      const errorCode = error.code;
-      const errorMessage = error.message;
-      console.error("Registration error:", errorCode, errorMessage);
-      res.redirect("/sign-up"); // Redirect with error message, if needed
-    });
+  try {
+    // Create the user in Firebase
+    const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+    const user = userCredential.user;
+    usermail = user.email;
+    console.log('User registered:', usermail);
+
+    // Store the user's email in your MongoDB database
+    const newUser = new User({ email: usermail});
+    await newUser.save();
+
+    res.redirect('/sign-in'); // Redirect after successful registration
+  } catch (error) {
+    const errorCode = error.code;
+    const errorMessage = error.message;
+    console.error('Registration error:', errorCode, errorMessage);
+    res.redirect('/sign-up'); // Redirect with an error message, if needed
+  }
 });
 
-// Handle POST request for user sign-in
-app.post("/sign-in", function (req, res) {
-  const email = req.body.email; // Change this to match the input field name
-  const password = req.body.password; // Change this to match the input field name
+// Handle POST request for user sign-in with email/password
+app.post('/sign-in', async (req, res) => {
+  const email = req.body.email;
+  const password = req.body.password;
 
-  signInWithEmailAndPassword(auth, email, password)
-    .then((userCredential) => {
-      const user = userCredential.user;
-      console.log("User signed in:", user.email); // Use user.email instead of user.email2
-      res.redirect("/")// Redirect after successful sign-in
-      
-    })
-    .catch((error) => {
-      const errorCode = error.code;
-      const errorMessage = error.message;
-      console.error("Sign-in error:", errorCode, errorMessage);
-      res.redirect("/sign-in"); // Redirect with error message, if needed
-    });
+  try {
+    const userCredential = await signInWithEmailAndPassword(auth, email, password);
+    const user = userCredential.user;
+    usermail = user.email;
+    console.log('User signed in:', usermail);
+
+    res.redirect('/choose_option'); // Redirect after successful sign-in
+  } catch (error) {
+    const errorCode = error.code;
+    const errorMessage = error.message;
+    console.error('Sign-in error:', errorCode, errorMessage);
+    res.redirect('/sign-in'); // Redirect with an error message, if needed
+  }
 });
 
 
 
+app.post('/store-google-email', async (req, res) => {
+  // Access the email from the request body
+  const userEmail = req.body.email;
+  usermail = userEmail; // Use 'email' here
 
-// auth.onAuthStateChanged((user) => {
-//   const navbarItems = document.getElementById("navbar-items");
-//   navbarItems.innerHTML = `
-//       <li class="nav-item">
-//           <a class="nav-link" href="#one">Contact</a>
-//       </li>
-//       <li class="nav-item">
-//           <a class="nav-link" href="/About-us">About Us</a>
-//       </li>
-//       <li class="nav-item" id="user-profile-nav">
-//           ${
-//               user
-//                   ? `
-//                       <div class="dropdown">
-//                           <a class="nav-link dropdown-toggle" href="#" role="button" id="userDropdown" data-bs-toggle="dropdown" aria-expanded="false">
-//                               <img src="${user.photoURL}" alt="User Profile Image" class="user-image">
-//                           </a>
-//                           <ul class="dropdown-menu" aria-labelledby="userDropdown">
-//                               <li><a class="dropdown-item" href="#">${user.email}</a></li>
-//                               <li><hr class="dropdown-divider"></li>
-//                               <li><a class="dropdown-item" href="#" onclick="handleSignOut()">Log Out</a></li>
-//                           </ul>
-//                       </div>
-//                   `
-//                   : `<a class="nav-link" href="/sign-up">Log in/Sign up</a>`
-//           }
-//       </li>
-//   `;
-// });
+  // Now you can use 'userEmail' to store it in your MongoDB or perform any other action
+  console.log('Received email from client (Google sign-in):', userEmail);
 
-// Add the authentication state observer
-// document.addEventListener("DOMContentLoaded", function () {
-//   const navbarItems = document.getElementById("navbar-items");
-//   auth.onAuthStateChanged((user) => {
-//     if (user) {
-//       // User is authenticated
-//       const profileImageURL = user.photoURL ? user.photoURL : "default-image-url";
+  // Store the email in your MongoDB database or perform other actions as needed
+  try {
+    // Use 'email' property to create a new User
+    const newUser = new User({ email: userEmail }); // Use 'email' here
+    await newUser.save();
+    console.log('User email saved to MongoDB:', userEmail);
+    // Respond with a success message or any necessary response
+    res.status(200).send('Email received and processed.');
+  } catch (error) {
+    console.error('Error saving user email to MongoDB:', error);
+    // Handle the error and respond accordingly
+    res.status(500).send('Internal Server Error');
+  }
+});
 
-//       navbarItems.innerHTML = `
-//         <div class="dropdown">
-//             <a class="nav-link dropdown-toggle" href="#" role="button" id="userDropdown" data-bs-toggle="dropdown" aria-expanded="false">
-//                 <img src="${profileImageURL}" alt="User Profile Image" class="user-image">
-//             </a>
-//             <ul class="dropdown-menu" aria-labelledby="userDropdown">
-//                 <li><a class="dropdown-item" href="#">${user.email}</a></li>
-//                 <li><hr class="dropdown-divider"></li>
-//                 <li><a class="dropdown-item" href="#" onclick="handleSignOut()">Log Out</a></li>
-//             </ul>
-//         </div>
-//       `;
-//     } else {
-//       // User is not authenticated
-//       navbarItems.innerHTML = `
-//         <a class="nav-link" href="/sign-up">Log in/Sign up</a>
-//       `;
-//     }
-//   });
-// });
-app.get("/", function (req, res) {
-  res.render("index");
+
+app.put('/store-numeric-value', async (req, res) => {
+  // Access the email and numeric value from the request body
+  const userEmail = usermail;
+  const numericValue = req.body.numericValue;
+
+  console.log('Received email from client (Google sign-in):', userEmail);
+  console.log('Received numeric value from client:', numericValue);
+
+  try {
+    // Find the user by email and update their document to include the voice recognition value
+    await User.findOneAndUpdate({ email: userEmail }, { $push: { numericValue: numericValue } });
+
+    res.status(200).send('Voice recognition data received and processed.');
+  } catch (error) {
+    console.error('Error saving voice recognition data to MongoDB:', error);
+    res.status(500).send('Internal Server Error');
+  }
+});
+
+
+app.get('/', function (req, res) {
+  res.render('index');
 });
 
 app.get("/check-email", (req, res) => {
@@ -154,21 +182,15 @@ app.get("/calculator", function (req, res) {
   res.render("calculator");
 });
 
-app.get("/verify-mail", function (req, res) {
-  res.render("verify-mail");
-});
 app.get("/Voice_interaction", function (req, res) {
   res.render("Voice_interaction");
 });
 
-app.listen(port, () => {
-  console.log(`Server is running on port ${port}`);
+app.get("/choose_option", function (req, res) {
+  res.render("choose_option");
 });
 
-// app.get("/verify", (req, res) => {
-//   // Extract the email from the query parameter
-//   const email = req.query.email;
-
-//   // Redirect the user to the home page after verification
-//   res.redirect("/");
-// });
+app.listen(port, async () => {
+  console.log(`Server is running on port ${port}`);
+  await connectDB();
+});

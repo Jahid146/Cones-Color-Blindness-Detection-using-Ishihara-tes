@@ -33,14 +33,9 @@
     <script src="https://www.gstatic.com/firebasejs/5.0.3/firebase.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.0.1/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.0.1/firebase-auth.js"></script>
-    <!-- <script src="https://www.gstatic.com/firebasejs/9.0.1/firebase-analytics.js"></script> -->
-    <!-- <script src="https://www.gstatic.com/firebasejs/10.3.0/firebase-SERVICE.js"></script> -->
 
     <!-- my javascript -->
     <script src="script.js"></script>
-
-    <!-- Facebook SDK -->
-    <!-- <script src="https://connect.facebook.net/en_US/sdk.js"></script> -->
   </head>
   <body>
     <div class="header">
@@ -111,12 +106,11 @@
 
           <div class="or">OR</div>
           <div class="icon bi-centered" method="POST">
-            <a id="google" class="bi bi-google large-icon" href="#"></a>
-            <!-- <a
-              id="facebook-login"
-              class="bi bi-facebook"
-              href="/facebook-signup"
-            ></a> -->
+            <a
+              id="google"
+              class="bi bi-google large-icon"
+              href="/google-sign-in"
+            ></a>
           </div>
         </form>
       </div>
@@ -128,7 +122,7 @@
     </div>
 
     <!-- javascript for toggle password vissibility -->
-    <script>
+    <script type="module">
       const firebaseConfig = {
         apiKey: "AIzaSyAZ7854htYYYmyH0qhWAwieRW2B7PTFdzg",
         authDomain: "cones-450e8.firebaseapp.com",
@@ -140,8 +134,9 @@
 
       const app = firebase.initializeApp(firebaseConfig);
       const auth = app.auth(); // Get the Auth instance
-
+      let userEmail;
       // Function to initiate Google authentication
+      // Function to initiate Google authentication and send email to the server
       function loginWithGoogle() {
         const provider = new firebase.auth.GoogleAuthProvider();
 
@@ -149,8 +144,31 @@
           .signInWithPopup(provider)
           .then((result) => {
             // Handle successful sign-in
-            console.log("Google user signed in:", result.user.email);
-            window.location.href = "/"; // Redirect to homepage after successful login
+            userEmail = result.user.email; // Get the user's email
+            console.log("Google user signed in:", userEmail);
+
+            // Send the email to your Node.js server using a POST request
+            fetch("/store-google-email", {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify({ email: userEmail }), // Send the email as data
+            })
+              .then((response) => {
+                // Handle the response from the server
+                if (response.ok) {
+                  console.log("success");
+                  window.location.href = "/choose_option"; // Redirect to homepage after successful login
+                } else {
+                  console.error("Failed to send email to server");
+                  // Handle the error
+                }
+              })
+              .catch((error) => {
+                console.error("Error sending email to server:", error);
+                // Handle the error
+              });
           })
           .catch((error) => {
             // Handle authentication error
@@ -173,8 +191,11 @@
           loginWithGoogle(); // Call the Google authentication function
         });
       }
-      
+      export { userEmail };
+    </script>
 
+
+    <script>
       const togglePassword = document.querySelector("#togglePassword");
       const password = document.querySelector("#password");
 

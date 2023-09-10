@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Color Blindness Calculator</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Merriweather+Sans&family=Montserrat&family=Sacramento&family=Ubuntu+Condensed&display=swap"
+        rel="stylesheet" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Merriweather+Sans&family=Montserrat&family=Roboto+Slab:wght@200;300;400;500;600&family=Sacramento&family=Ubuntu+Condensed&display=swap"
+        rel="stylesheet" />
+    <!-- BootStrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous" />
+    <!-- BootStrap JavaScript -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz"
+        crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" />
+    <!-- <link rel="stylesheet" type="text/css" href="/css/calculator style.css" />
+    <link rel="stylesheet" type="text/css" href="/css/Voice_interaction.css" /> -->
+    <link rel="stylesheet" href="/css/choose_option.css">
+</head>
+
+<body>
+    <div class="first">
+        <nav class="navbar navbar-expand-lg navbar-dark">
+            <p class="navbar-brand navbar-expand-lg logo">Cones 👁️</p>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+                aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <!-- <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+              <a class="a_style" href="/"
+                ><button type="button" class="nav-link">Exit</button></a
+              >
+            </li>
+                    <li class="nav-item">
+                        <a class="a_style" href="/Voice_interaction"
+                ><button type="button" class="nav-link">Restart</button></a
+              >
+                    </li>
+                </ul>
+            </div> -->
+        </nav>
+    </div>
+
+    <section id="choose-option">
+        <div class="row">
+            <div class="col-sm-6 custom-class">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Test by Voice Command</h5>
+                        <p class="card-text">Explore an innovative way to test for color blindness using your voice.
+                            Click this button to start the Ishihara test through voice commands, providing an accessible
+                            and engaging experience for users of all abilities.</p>
+                        <h2>Follow this rules:</h2>
+                        <ul>
+                            <li>When the page loads, you will initially see a button labeled "Start to Click Here</li>
+                            <li>Voice recognition will automatically stop after 5 seconds of inactivity.
+                            </li>
+                            <li>After clicking the "Start to Click Here" button, this application will listen for your
+                                voice commands.</li>
+                            <li>You can say either a number (e.g., "3," "5," "6") or specific words like "nothing" or
+                                "unsure."</li>
+                            <li><b>For single digit ,you have to say (e.g., "03," "05," "06")</b></li>
+                            <li>After successfully recognizing and processing a valid command,to go next image.</li>
+                        </ul>
+                        <p class="card-title">If you want to test by Voice, Please click here - </p>
+                      <div class="divB">  <a href="/Voice_interaction" class="btn btn-primary button btt">Test By Voice</a></div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-6 custom-class">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Test by Calculator</h5>
+                        <p class="card-text">Prefer a traditional approach? Click here to access the Ishihara color
+                            blindness test using a calculator. This option allows for precise assessment using numerical
+                            inputs, making it a reliable choice for accurate color vision evaluation.</p>
+                        <h2>Follow this rules:</h2>
+                        <ul>
+                            <li>Upon loading the page, you will see an image displayed.</li>
+                            <li><b>If there is no user activity (button clicks) for 5 seconds, a message will be
+                                    displayed on the screen.</b></li>
+                            <li>Every time you interact with the application (click a button), the timer resets. If
+                                you're active, the message won't appear.</li>
+                            <li>Every time you interact with the application (click a button), the timer resets. If
+                                you're active, the message won't appear.</li>
+                        </ul>
+                        <p class="card-title">If you want to test by Calculator, Please click here - </p>
+                        <div class="divB"><a href="/calculator" class="btn btn-primary button btt">Test By Calculator</a></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+</body>
+
+<footer>
+    <div class="last-content">
+        <div class="last">
+            <p class="terms">© 2023 Cones👁️ Ltd. All Rights Reserved</p>
+        </div>
+    </div>
+
+</footer>
+
+</html>
