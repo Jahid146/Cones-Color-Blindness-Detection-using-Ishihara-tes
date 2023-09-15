@@ -19,8 +19,11 @@ const userSchema = new mongoose.Schema({
   },
   numericValue: [{
     type: String,
-    unique:true,// Change the data type if needed (e.g., String)
+    
   }],
+  actualValue: [{
+    type: String,
+      }],
 });
 
 
@@ -73,17 +76,20 @@ app.post('/sign-up', async (req, res) => {
   }
 
   try {
-    // Create the user in Firebase
     const userCredential = await createUserWithEmailAndPassword(auth, email, password);
     const user = userCredential.user;
     usermail = user.email;
     console.log('User registered:', usermail);
 
-    // Store the user's email in your MongoDB database
-    const newUser = new User({ email: usermail});
+    // Define the specific actual values you want to store
+    const specificActualValues = ['12','03', '05', '06','08','12','15','16','26','29']; // Replace with your desired values
+
+    // Store the user's email and the specific actual values in your MongoDB database
+    const newUser = new User({ email: usermail, actualValue: specificActualValues });
     await newUser.save();
 
     res.redirect('/sign-in'); // Redirect after successful registration
+
   } catch (error) {
     const errorCode = error.code;
     const errorMessage = error.message;
@@ -92,7 +98,19 @@ app.post('/sign-up', async (req, res) => {
   }
 });
 
+
 // Handle POST request for user sign-in with email/password
+app.get("/sign-in", async (req, res) => {
+  // Check if the user is already authenticated (signed in)
+  if (usermail) {
+    // User is already signed in, redirect to the home page
+    res.redirect('/'); // Replace '/home-page' with your actual home page URL
+  } else {
+    // User is not signed in, render the sign-in page
+    res.render("sign-in");
+  }
+});
+
 app.post('/sign-in', async (req, res) => {
   const email = req.body.email;
   const password = req.body.password;
@@ -103,7 +121,16 @@ app.post('/sign-in', async (req, res) => {
     usermail = user.email;
     console.log('User signed in:', usermail);
 
-    res.redirect('/choose_option'); // Redirect after successful sign-in
+    // Check if the user's email exists in the database
+    const existingUser = await User.findOne({ email: usermail });
+
+    if (existingUser) {
+      // User exists in the database, redirect to the homepage
+      res.redirect('/'); // Replace '/' with the URL of your homepage
+    } else {
+      // User doesn't exist in the database, redirect to the choose_option page
+      res.redirect('/');
+    }
   } catch (error) {
     const errorCode = error.code;
     const errorMessage = error.message;
@@ -119,24 +146,50 @@ app.post('/store-google-email', async (req, res) => {
   const userEmail = req.body.email;
   usermail = userEmail; // Use 'email' here
 
-  // Now you can use 'userEmail' to store it in your MongoDB or perform any other action
-  console.log('Received email from client (Google sign-in):', userEmail);
-
-  // Store the email in your MongoDB database or perform other actions as needed
   try {
-    // Use 'email' property to create a new User
-    const newUser = new User({ email: userEmail }); // Use 'email' here
-    await newUser.save();
-    console.log('User email saved to MongoDB:', userEmail);
-    // Respond with a success message or any necessary response
-    res.status(200).send('Email received and processed.');
+    // Try to find an existing user document with the same email
+    const existingUser = await User.findOne({ email: userEmail });
+
+    if (!existingUser) {
+      // If the user does not exist, create a new user document
+      const specificActualValues = ['12','03', '05', '06', '08', '35', '15', '16', '26', '29'];
+      const newUser = new User({ email: userEmail, actualValue: specificActualValues });
+      await newUser.save();
+      console.log('New user email saved to MongoDB:', userEmail);
+      
+      // Redirect to the choose_option page for first-time users
+      res.redirect('/choose_option');
+    } else {
+      console.log('User already exists in MongoDB:', userEmail);
+      
+      // Redirect to the homepage for returning users
+      res.redirect('/');
+    }
   } catch (error) {
     console.error('Error saving user email to MongoDB:', error);
-    // Handle the error and respond accordingly
     res.status(500).send('Internal Server Error');
   }
 });
 
+
+//store the value of first image into database
+app.put('/store-user-input', async (req, res) => {
+  const userEmail = usermail;
+  const userProvidedValue = req.body.number;
+
+  console.log('Received email from client (Google sign-in):', userEmail);
+  console.log('Received numeric value from client:', userProvidedValue);
+
+  try {
+    // Find the user by email and update their document to include the voice recognition value
+    await User.findOneAndUpdate({ email: userEmail }, { $push: { numericValue: userProvidedValue } });
+
+    res.status(200).send('Voice recognition data received and processed.');
+  } catch (error) {
+    console.error('Error saving voice recognition data to MongoDB:', error);
+    res.status(500).send('Internal Server Error');
+  }
+});
 
 app.put('/store-numeric-value', async (req, res) => {
   // Access the email and numeric value from the request body
@@ -153,6 +206,24 @@ app.put('/store-numeric-value', async (req, res) => {
     res.status(200).send('Voice recognition data received and processed.');
   } catch (error) {
     console.error('Error saving voice recognition data to MongoDB:', error);
+    res.status(500).send('Internal Server Error');
+  }
+});
+
+
+app.get('/Result1', async (req, res) => {
+  try {
+    // Fetch the user's data from the database
+    const userData = await User.findOne({ email: usermail });
+
+    if (!userData) {
+      return res.status(404).send('User data not found.');
+    }
+
+    // Render the 'Result1' EJS template with the user data
+    res.render('Result1', { userData });
+  } catch (error) {
+    console.error('Error fetching data from MongoDB:', error);
     res.status(500).send('Internal Server Error');
   }
 });
@@ -188,6 +259,14 @@ app.get("/Voice_interaction", function (req, res) {
 
 app.get("/choose_option", function (req, res) {
   res.render("choose_option");
+});
+
+app.get("/Result1", function (req, res) {
+  res.render("Result1");
+});
+
+app.get("/Result", function (req, res) {
+  res.render("Result");
 });
 
 app.listen(port, async () => {

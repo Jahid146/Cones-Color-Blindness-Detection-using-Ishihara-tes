@@ -46,6 +46,31 @@
   position: relative;
 }
 
+/* Style for a transparent button with a border */
+#startTestButton {
+  background-color: transparent; /* Transparent background */
+  border: 2px solid wheat; /* Border color */
+  color: white; /* Text color */
+  font-size: 1.5rem; /* Font size */
+  padding: 10px 20px; /* Padding */
+  border-radius: 5px; /* Rounded corners */
+  transition: background-color 0.3s, border 0.3s, color 0.3s, transform 0.3s; /* Transition effect for hover */
+  margin-left: 50px; /* Margin on the left side */
+  margin-top: 40px; /* Margin on the top side */
+}
+
+#startTestButton:hover {
+  background-color: #f2f7f2; /* Background color on hover */
+  color: #000000; /* Text color on hover */
+  transform: scale(1.05); /* Increase size on hover */
+}
+
+#startTestButton:focus {
+  outline: none; /* Remove focus outline */
+}
+
+
+
 .dalton{
     width: 60%;
     border-radius: 50%;

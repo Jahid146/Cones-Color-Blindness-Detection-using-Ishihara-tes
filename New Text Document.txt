@@ -1,27 +1,106 @@
+app.post('/store-numeric-value', async (req, res) => {
+  // Access the email and numeric value from the request body
+  const userEmail = usermail;
+  const numericValue = req.body.numericValue;
+
+  console.log('Received email from client (Google sign-in):', userEmail);
+  console.log('Received numeric value from client:', numericValue);
+
+  try {
+    // Find the user by email and update their document to include the voice recognition value
+    await User.findOneAndUpdate({ email: userEmail }, { $push: { numericValue: numericValue } });
+
+    // Redirect to the result page after successfully saving the values
+    res.redirect('/result');
+  } catch (error) {
+    console.error('Error saving voice recognition data to MongoDB:', error);
+    res.status(500).send('Internal Server Error');
+  }
+});
+
+
+
 <!DOCTYPE html>
 <html>
-<head>
-    <!-- Your existing head content here -->
-
-    <!-- Add these lines for the voice input feature -->
-    <script src="https://cdn.jsdelivr.net/npm/web-speech-api@0.1.2/dist/speech-api.min.js"></script>
-    <style>
-        /* Add any additional CSS styles here */
-        .voice-output {
-            display: none;
-        }
-    </style>
-</head>
-<body>
-    <!-- Your existing HTML content here -->
-
-    <div class="center">
-        <button type="button" id="startVoiceButton" class="button">Start Voice Input</button>
-        <div id="voiceOutput" class="voice-output"></div>
-        <audio id="voiceAudio" controls style="display: none;"></audio>
+  <head>
+    <!-- ... (head section code) ... -->
+  </head>
+  <body>
+    <div class="header">
+      <!-- ... (header code) ... -->
     </div>
 
-    <!-- Your existing JavaScript import statement and other content here -->
-    <script src="script.js"></script>
-</body>
+    <div class="container">
+      <h1 class="mt-4 text-right her">
+        Here is the result of your Ishihara test:
+      </h1>
+      <div class="d-flex justify-content-center mt-3">
+        <table class="table table-bordered small-table">
+          <thead>
+            <tr>
+              <th>Image</th>
+              <th class="text-center">Actual Number</th>
+              <th class="text-center">User Identified Number</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% userData.numericValue.forEach((value, index) => { %>
+              <tr>
+                <td>Image<%= index + 1 %></td>
+                <td class="text-center"><%= userData.actualValue[index] %></td>
+                <td class="text-center"><%= value %></td>
+              </tr>
+            <% }); %>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <div class="container">
+      <div class="mt-4 text-right first">
+        <!-- ... (rest of the content) ... -->
+      </div>
+    </div>
+
+    <div class="last-content">
+      <!-- ... (footer code) ... -->
+    </div>
+  </body>
 </html>
+
+
+
+app.post('/store-numeric-value', async (req, res) => {
+  // Access the email and numeric value from the request body
+  const userEmail = usermail;
+  const numericValue = req.body.numericValue;
+
+  console.log('Received email from client (Google sign-in):', userEmail);
+  console.log('Received numeric value from client:', numericValue);
+
+  try {
+    // Find the user by email and update their document to include the voice recognition value
+    await User.findOneAndUpdate({ email: userEmail }, { $push: { numericValue: numericValue } });
+
+    // Redirect to the result page after successfully saving the values
+    res.redirect('/Result1');
+  } catch (error) {
+    console.error('Error saving voice recognition data to MongoDB:', error);
+    res.status(500).send('Internal Server Error');
+  }
+});
+
+
+
+app.get("/Result1", async (req, res) => {
+  try {
+    // Replace this with code to fetch user-specific data from MongoDB
+    const userData = await User.findOne({ email: usermail }); // Assuming you can find user data by their email
+
+    // Pass the fetched data to the EJS template for rendering
+    res.render('Result1', { userData });
+  } catch (error) {
+    console.error('Error fetching data from MongoDB:', error);
+    res.status(500).send('Internal Server Error');
+  }
+});
+

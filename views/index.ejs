@@ -20,6 +20,7 @@
     <script src="https://www.gstatic.com/firebasejs/9.0.1/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.0.1/firebase-auth.js"></script>
     <script src="script.js"></script>
+    <script src="/script/first_image.js"></script>
 </head>
 <body>
     <div class="first">
@@ -102,15 +103,16 @@
         </div>
         <br>
         <br>
-        <div class="first-image-section">
+        <div id="userFormContainer" class="first-image-section">
           <p class="f"><strong>There you go:</strong></p>
-          <div class="input-container">
+          <form id="numberForm" action="/store-user-input" method="PUT">
+            <div class="input-container">
               <img src="/images/12.1.jpg" alt="first image" class="first-image">
-              <input type="text" class="form-control" placeholder="Enter the number">
-              <button type="submit" class="btn btn-primary">Submit</button>
-          </div>
-      </div>
-      
+              <input type="text" class="form-control" id="numberInput" name="userInput" placeholder="Enter the number" required>
+              <button type="button" class="btn btn-primary" onclick="submitForm()">Submit</button>
+            </div>
+          </form>
+        </div>
 
         <div class="last_part">
           <h1 class="last_logo">Cones👁️</h1>
@@ -178,6 +180,68 @@
       // Redirect or perform necessary actions after sign-out
     });
   }
+
+
+  auth.onAuthStateChanged((user) => {
+        const userFormContainer = document.getElementById("userFormContainer");
+
+        if (user) {
+          // If user is authenticated (logged in), show the form container
+          userFormContainer.style.display = "block";
+          // Add any additional logic for authenticated users here
+        } else {
+          // If user is not authenticated (logged out), hide the form container
+          userFormContainer.style.display = "none";
+          // Add any additional logic for non-authenticated users here
+        }
+      });
+
+
+
+//   document.getElementById('numberForm').addEventListener('submit', function (e) {
+//   e.preventDefault(); // Prevent the default form submission
+
+//   // Get the value from the input field
+//   const numberInput = document.getElementById('numberInput').value;
+//   console.log(numberInput);
+
+//   // Check if the input value is equal to "12"
+//   if (numberInput === "12") {
+//     // Create a JSON object with the user's input
+//     const jsonData = { number: numberInput };
+
+//     // Convert the JSON object to a string
+//     const jsonStr = JSON.stringify(jsonData);
+
+//     // Send the JSON data to the server to create a JSON file
+//     fetch('/store-user-input', {
+//       method: 'PUT',
+//       headers: {
+//         'Content-Type': 'application/json',
+//       },
+//       body: jsonStr,
+//     })
+//       .then((response) => {
+//         // Handle the response from the server
+//         if (response.ok) {
+//           console.log('JSON file created on the server');
+//           // Redirect to "/choosen_file"
+//           window.location.href = "/choose_option";
+//         } else {
+//           console.error('Failed to create JSON file on the server');
+//           // Handle the error
+//         }
+//       })
+//       .catch((error) => {
+//         console.error('Error creating JSON file on the server:', error);
+//         // Handle the error
+//       });
+//   } else {
+//     // Redirect to "/result" if the input is not equal to "12"
+//     window.location.href = "/";
+//   }
+// });
+
     </script>
 
 </body>

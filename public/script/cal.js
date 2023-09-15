@@ -106,10 +106,11 @@ backButton.addEventListener("click", () => {
     imageElement.style.display = "block";
     messageElement.style.display = "none";
     backButton.style.display = "none";
-    lastInteractionTime = Date.now(); // Reset the interaction time
+    lastInteractionTime = Date.now(); // Reset the interaction time to consider the back button click as activity
     startTimer();
     hideClockButton(); // Hide the "Start to Clock Here" button
 });
+
 
 backButton.addEventListener("click", () => {
     showNextImage();

@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Result Without Color Blindness</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Merriweather+Sans&family=Montserrat&family=Sacramento&family=Ubuntu+Condensed&display=swap"
+      rel="stylesheet"
+    />
+    <!-- BootStrap CSS -->
+
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM"
+      crossorigin="anonymous"
+    />
+    <link rel="stylesheet" href="/css/Result.css" />
+    <!-- BootStrap JavaScript -->
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz"
+      crossorigin="anonymous"
+    ></script>
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css"
+    />
+    <script src="public/JavaScript/script.js"></script>
+  </head>
+  <body>
+    <div class="header">
+      <nav class="navbar navbar-expand-lg navbar-dark">
+        <p class="navbar-brand navbar-expand-lg logo">Cones👁️</p>
+        <!-- <button type="button" class="sign-in-bar">Sign In</button> -->
+      </nav>
+    </div>
+
+    <div class="container">
+      <h1 class="mt-4 text-right her">
+        Here is the result of your Ishihara test:
+      </h1>
+      <div class="d-flex justify-content-center mt-3">
+        <table class="table table-bordered small-table">
+          <thead>
+            <tr>
+              <th>Image</th>
+              <th class="text-center">Actual Number</th>
+              <th class="text-center">User Identified Number</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% userData.actualValue.forEach((actual, index) => { %>
+              <tr>
+                <td>Image <%= index + 1 %></td>
+                <td class="text-center"><%= actual %></td>
+                <td class="text-center"><%= userData.numericValue[index] %></td>
+              </tr>
+            <% }); %>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <div class="container">
+      <div class="mt-4 text-right first">
+        <h3><b>Maintain Healthy Vision</b></h3>
+        <p>
+          Remember that regular eye check-ups are essential for maintaining
+          healthy vision throughout your life. If you ever notice any changes in
+          your color perception or overall vision, it's advisable to consult
+          with an eye care professional.
+        </p>
+      </div>
+    </div>
+    <div class="container">
+      <div class="mt-4 text-right first">
+        <h3><b>Conclusion</b></h3>
+        <p>
+          Congratulations on your clear color vision! We hope you continue to
+          enjoy the world of colors and all the wonderful experiences it brings.
+        </p>
+      </div>
+    </div>
+
+    <div class="last-content">
+      <div class="last">
+        <p class="terms">© 2023 Cones👁️ Ltd. All Rights Reserved</p>
+      </div>
+    </div>
+  </body>
+</html>
