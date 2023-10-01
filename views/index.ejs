@@ -151,7 +151,8 @@
   const userProfileNav = document.getElementById("user-profile-nav");
   if (user) {
     // If user is authenticated (logged in)
-    const profileImageURL = user.photoURL ;
+    const profileImageURL = user.photoURL || "/images/user.jpg" ;
+    console.log(profileImageURL)
     
 
     userProfileNav.innerHTML = `

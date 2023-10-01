@@ -49,7 +49,7 @@
       <div class="sign-up-template">
         <h2>SIGN UP TO CONES👁️</h2>
 
-        <form action="/sign-up" class="sign-up-form" method="POST">
+        <form id="signUpForm" class="sign-up-form" method="POST">
           <div class="form-group">
             <label for="email">Email Address:</label>
             <input
@@ -89,7 +89,6 @@
               ></i>
             </div>
           </div>
-
           <div class="form-group">
             <div class="checkbox">
               <input type="checkbox" id="agreeCheckbox" required />
@@ -100,12 +99,12 @@
             </div>
           </div>
           <div class="form-group">
-            <!-- <input type="submit" value="CREATE ACCOUNT"> -->
             <input type="submit" value="Sign Up" />
           </div>
 
           <div class="or">OR</div>
-          <div class="icon bi-centered" method="POST">
+
+          <div class="icon bi-centered">
             <a
               id="google"
               class="bi bi-google large-icon"
@@ -137,6 +136,40 @@
       let userEmail;
       // Function to initiate Google authentication
       // Function to initiate Google authentication and send email to the server
+      // Function to handle form submission
+      function handleSignUp(event) {
+        event.preventDefault(); // Prevent the default form submission behavior
+
+        const email = document.getElementById("email").value;
+        const password = document.getElementById("password").value;
+
+        // Create a new user with the provided email and password
+        auth
+          .createUserWithEmailAndPassword(email, password)
+          .then((userCredential) => {
+            // Registration successful, user is signed in
+            const user = userCredential.user;
+            console.log("User registered:", user);
+
+            // Redirect to the sign-in page
+            window.location.href = "/sign-in";
+          })
+          .catch((error) => {
+            // Handle registration error
+            console.error("Registration error:", error.code, error.message);
+            // Display an error message to the user if needed
+          });
+      }
+
+      // Find the sign-up form by its ID
+      const signUpForm = document.getElementById("signUpForm");
+
+      // Attach a submit event listener to the form
+      if (signUpForm) {
+        signUpForm.addEventListener("submit", handleSignUp);
+      }
+
+      // Function to initiate Google authentication
       function loginWithGoogle() {
         const provider = new firebase.auth.GoogleAuthProvider();
 
@@ -158,7 +191,7 @@
               .then((response) => {
                 // Handle the response from the server
                 if (response.ok) {
-                  console.log("success");
+                  console.log("Google sign-in success");
                   window.location.href = "/"; // Redirect to homepage after successful login
                 } else {
                   console.error("Failed to send email to server");
@@ -191,9 +224,7 @@
           loginWithGoogle(); // Call the Google authentication function
         });
       }
-      export { userEmail };
     </script>
-
 
     <script>
       const togglePassword = document.querySelector("#togglePassword");

@@ -1,0 +1,64 @@
+<script>
+  const firebaseConfig = {
+    apiKey: "Your-API-Key",
+    authDomain: "Your-Auth-Domain",
+    projectId: "Your-Project-ID",
+    storageBucket: "Your-Storage-Bucket",
+    messagingSenderId: "Your-Messaging-Sender-ID",
+    appId: "Your-App-ID",
+  };
+
+  const app = firebase.initializeApp(firebaseConfig);
+  const auth = app.auth(); // Get the Auth instance
+
+  auth.onAuthStateChanged((user) => {
+    const userProfileNav = document.getElementById("user-profile-nav");
+    const defaultImageURL = "/default-profile-image.png"; // Set your default image URL here
+
+    if (user) {
+      // If user is authenticated (logged in)
+      const profileImageURL = user.photoURL || defaultImageURL;
+
+      userProfileNav.innerHTML = `
+        <div class="dropdown">
+            <a class="nav-link dropdown-toggle" href="#" role="button" id="userDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                <img src="${profileImageURL}" alt="User Profile Image" class="user-image rounded-circle">
+            </a>
+            <ul class="dropdown-menu" aria-labelledby="userDropdown">
+                <li class="text-center">${user.email}</li>
+                <li><hr class="dropdown-divider"></li>
+                <li><a class="dropdown-item" href="#" onclick="handleSignOut()">Log Out</a></li>
+            </ul>
+        </div>
+      `;
+    } else {
+      // If user is not authenticated (logged out), use the default image
+      userProfileNav.innerHTML = `
+        <a class="nav-link" href="/sign-up">
+            <img src="${defaultImageURL}" alt="User Profile Image" class="user-image rounded-circle">
+        </a>
+      `;
+    }
+  });
+
+  // Function to handle user sign-out
+  function handleSignOut() {
+    auth.signOut().then(() => {
+      // Redirect or perform necessary actions after sign-out
+    });
+  }
+
+  auth.onAuthStateChanged((user) => {
+    const userFormContainer = document.getElementById("userFormContainer");
+
+    if (user) {
+      // If user is authenticated (logged in), show the form container
+      userFormContainer.style.display = "block";
+      // Add any additional logic for authenticated users here
+    } else {
+      // If user is not authenticated (logged out), hide the form container
+      userFormContainer.style.display = "none";
+      // Add any additional logic for non-authenticated users here
+    }
+  });
+</script>

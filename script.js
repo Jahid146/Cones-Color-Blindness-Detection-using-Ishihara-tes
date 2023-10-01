@@ -66,38 +66,38 @@ const appFirebase = initializeApp(firebaseConfig);
 const auth = getAuth(appFirebase);
 
 // Handle POST request for user registration with email/password
-app.post('/sign-up', async (req, res) => {
-  const email = req.body.email1;
-  const password = req.body.password1;
-  const confirmPassword = req.body.confirm_password1;
+// app.post('/sign-up', async (req, res) => {
+//   const email = req.body.email1;
+//   const password = req.body.password1;
+//   const confirmPassword = req.body.confirm_password1;
 
-  if (password !== confirmPassword) {
-    return res.redirect('/sign-up');
-  }
+//   if (password !== confirmPassword) {
+//     return res.redirect('/sign-up');
+//   }
 
-  try {
-    const userCredential = await createUserWithEmailAndPassword(auth, email, password);
-    const user = userCredential.user;
-    usermail = user.email;
-    console.log('User registered:', usermail);
+//   try {
+//     const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+//     const user = userCredential.user;
+//     usermail = user.email;
+//     console.log('User registered:', usermail);
 
-    // Define the specific actual values you want to store
-    const specificActualValues = ['12','08','06','29','57','05','03','15','74','02','06','97','45','05','07','16','73','nothing','nothing','nothing','nothing','26','42','35','96']; 
-    // ,'15','74','02','06','97','45','05','07','16','73','nothing','nothing','nothing','nothing'
+//     // Define the specific actual values you want to store
+//     const specificActualValues = ['12','08','06','29','57','05','03','15','74','02','06','97','45','05','07','16','73','nothing','nothing','nothing','nothing','26','42','35','96']; 
+//     // ,'15','74','02','06','97','45','05','07','16','73','nothing','nothing','nothing','nothing'
 
-    // Store the user's email and the specific actual values in your MongoDB database
-    const newUser = new User({ email: usermail, actualValue: specificActualValues });
-    await newUser.save();
+//     // Store the user's email and the specific actual values in your MongoDB database
+//     const newUser = new User({ email: usermail, actualValue: specificActualValues });
+//     await newUser.save();
 
-    res.redirect('/sign-in'); // Redirect after successful registration
+//     res.redirect('/sign-in'); // Redirect after successful registration
 
-  } catch (error) {
-    const errorCode = error.code;
-    const errorMessage = error.message;
-    console.error('Registration error:', errorCode, errorMessage);
-    res.redirect('/sign-up'); // Redirect with an error message, if needed
-  }
-});
+//   } catch (error) {
+//     const errorCode = error.code;
+//     const errorMessage = error.message;
+//     console.error('Registration error:', errorCode, errorMessage);
+//     res.redirect('/sign-up'); // Redirect with an error message, if needed
+//   }
+// });
 
 app.get("/sign-in", async (req, res) => {
   // Check if the user is already authenticated (signed in)
@@ -124,10 +124,19 @@ app.post('/sign-in', async (req, res) => {
     const existingUser = await User.findOne({ email: usermail });
 
     if (existingUser) {
-      // User exists in the database, redirect to the homepage
-      res.redirect('/'); // Replace '/' with the URL of your homepage
+       console.log('User already exists in MongoDB:', usermail);
+      
+      // Redirect to the homepage for returning users
+      res.redirect('/');
     } else {
-      // User doesn't exist in the database, redirect to the choose_option page
+      // If the user does not exist, create a new user document
+      const specificActualValues = ['12','08','06','29','57','05','03','15','74','02','06','97','45','05','07','16','73','nothing','nothing','nothing','nothing','26','42','35','96']; 
+      // ,'15','74','02','06','97','45','05','07','16','73','nothing','nothing','nothing','nothing'
+      const newUser = new User({ email: usermail, actualValue: specificActualValues });
+      await newUser.save();
+      console.log('New user email saved to MongoDB:', usermail);
+      
+      // Redirect to the choose_option page for first-time users
       res.redirect('/');
     }
   } catch (error) {
@@ -158,7 +167,7 @@ app.post('/store-google-email', async (req, res) => {
       console.log('New user email saved to MongoDB:', userEmail);
       
       // Redirect to the choose_option page for first-time users
-      res.redirect('/choose_option');
+      res.redirect('/');
     } else {
       console.log('User already exists in MongoDB:', userEmail);
       
@@ -227,6 +236,32 @@ app.put('/store-value', async (req, res) => {
     res.status(200).send('Voice recognition data received and processed.');
   } catch (error) {
     console.error('Error saving voice recognition data to MongoDB:', error);
+    res.status(500).send('Internal Server Error');
+  }
+});
+
+
+app.post('/restart', async (req, res) => {
+  const userEmail = usermail;
+
+  try {
+    // Find the user by email and get their document
+    const user = await User.findOne({ email: userEmail });
+
+    if (!user) {
+      return res.status(404).send('User not found.');
+    }
+
+    // Keep the first numericValue and clear the rest
+    user.numericValue = user.numericValue.slice(0, 1);
+
+    // Save the updated user document
+    await user.save();
+
+    // Redirect to the current page
+    res.redirect('/calculator');
+  } catch (error) {
+    console.error('Error clearing numericValue data:', error);
     res.status(500).send('Internal Server Error');
   }
 });

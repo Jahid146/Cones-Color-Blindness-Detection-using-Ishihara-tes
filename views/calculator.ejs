@@ -41,8 +41,6 @@
     />
     <link rel="stylesheet" type="text/css" href="/css/calculator-style.css" />
     <script src="script.js"></script>
-
-    
   </head>
 
   <body>
@@ -68,9 +66,11 @@
               >
             </li>
             <li class="nav-item">
-              <a class="a_style" href="/calculator"
-                ><button type="button" class="nav-link">Restart</button></a
-              >
+              <a class="a_style" href="/calculator">
+                <button type="button" id="restartButton" class="nav-link">
+                  Restart
+                </button>
+              </a>
             </li>
           </ul>
         </div>
@@ -81,7 +81,6 @@
       <div class="cal-head">
         <div id="image-container">
           <img id="image" class="ig" src="/images/3.jpg" />
-         
         </div>
       </div>
 
@@ -110,15 +109,10 @@
           </button>
         </div>
         <div class="cal-body cen">
-          <button type="button" id="buttonDone" class="button UN">
-            Done
-          </button>
+          <button type="button" id="buttonDone" class="button UN">Done</button>
         </div>
-
-       
       </div>
     </div>
-    
 
     <script src="/script/cal.js"></script>
   </body>
@@ -128,7 +122,20 @@
         <p class="terms">© 2023 Cones👁️ Ltd. All Rights Reserved</p>
       </div>
     </div>
-  
+
     <script src="/script/cal.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+      $(document).ready(function () {
+        // Add a click event handler for the "Restart" button
+        $("#restartButton").click(function () {
+          // Send a POST request to the /restart endpoint
+          $.post("/restart", function (data) {
+            // Reload the page after clearing numericValue
+            location.reload();
+          });
+        });
+      });
+    </script>
   </footer>
 </html>
