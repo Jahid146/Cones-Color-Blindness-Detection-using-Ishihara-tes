@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Result With Color Blindness</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Merriweather+Sans&family=Montserrat&family=Sacramento&family=Ubuntu+Condensed&display=swap"
+      rel="stylesheet"
+    />
+    <!-- BootStrap CSS -->
+
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM"
+      crossorigin="anonymous"
+    />
+    <link rel="stylesheet" href="public/css/Result.css" />
+    <!-- BootStrap JavaScript -->
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz"
+      crossorigin="anonymous"
+    ></script>
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css"
+    />
+    <script src="public/JavaScript/script.js"></script>
+  </head>
+  <body>
+    <div class="header">
+      <nav class="navbar navbar-expand-lg navbar-dark">
+        <p class="navbar-brand navbar-expand-lg logo">Cones👁️</p>
+        <!-- <button type="button" class="sign-in-bar">Sign In</button> -->
+      </nav>
+    </div>
+
+    <div class="container">
+      <h1 class="mt-4 text-right her">
+        Here is the result of your Ishihara test:
+      </h1>
+      <div class="d-flex justify-content-center mt-3">
+        <table class="table table-bordered small-table">
+          <thead>
+            <tr>
+              <th>Image</th>
+              <th class="text-center">Actual Number</th>
+              <th class="text-center">User Identified Number</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Image1</td>
+              <td class="text-center">12</td>
+              <td class="text-center">12</td>
+            </tr>
+            <tr>
+              <td>Image2</td>
+              <td class="text-center">8</td>
+              <td class="text-center">8</td>
+            </tr>
+            <tr>
+              <td>Image3</td>
+              <td class="text-center">6</td>
+              <td class="text-center">6</td>
+            </tr>
+            <tr>
+              <td>Image4</td>
+              <td class="text-center">29</td>
+              <td class="text-center">29</td>
+            </tr>
+            <tr>
+              <td>Image5</td>
+              <td class="text-center">57</td>
+              <td class="text-center">58</td>
+            </tr>
+            <tr>
+              <td>Image6</td>
+              <td class="text-center">5</td>
+              <td class="text-center">5</td>
+            </tr>
+            <tr>
+              <td>Image7</td>
+              <td class="text-center">3</td>
+              <td class="text-center">3</td>
+            </tr>
+            <tr>
+              <td>Image8</td>
+              <td class="text-center">15</td>
+              <td class="text-center">15</td>
+            </tr>
+            <tr>
+              <td>Image9</td>
+              <td class="text-center">74</td>
+              <td class="text-center">74</td>
+            </tr>
+            <tr>
+              <td>Image10</td>
+              <td class="text-center">2</td>
+              <td class="text-center">2</td>
+            </tr>
+            <tr>
+              <td>Image11</td>
+              <td class="text-center">6</td>
+              <td class="text-center">6</td>
+            </tr>
+            <tr>
+              <td>Image12</td>
+              <td class="text-center">97</td>
+              <td class="text-center">97</td>
+            </tr>
+            <tr>
+              <td>Image13</td>
+              <td class="text-center">45</td>
+              <td class="text-center">45</td>
+            </tr>
+            <tr>
+              <td>Image14</td>
+              <td class="text-center">7</td>
+              <td class="text-center">3</td>
+            </tr>
+            <tr>
+              <td>Image15</td>
+              <td class="text-center">16</td>
+              <td class="text-center">12</td>
+            </tr>
+            <tr>
+              <td>Image16</td>
+              <td class="text-center">73</td>
+              <td class="text-center">42</td>
+            </tr>
+            <tr>
+              <td>Image17</td>
+              <td class="text-center">None</td>
+              <td class="text-center">2</td>
+            </tr>
+            <tr>
+              <td>Image18</td>
+              <td class="text-center">None</td>
+              <td class="text-center">4</td>
+            </tr>
+            <tr>
+              <td>Image19</td>
+              <td class="text-center">None</td>
+              <td class="text-center">5</td>
+            </tr>
+            <tr>
+              <td>Image20</td>
+              <td class="text-center">None</td>
+              <td class="text-center">8</td>
+            </tr>
+            <tr>
+              <td>Image21</td>
+              <td class="text-center">26</td>
+              <td class="text-center">6</td>
+            </tr>
+            <tr>
+              <td>Image22</td>
+              <td class="text-center">42</td>
+              <td class="text-center">2</td>
+            </tr>
+            <tr>
+              <td>Image23</td>
+              <td class="text-center">35</td>
+              <td class="text-center">5</td>
+            </tr>
+            <tr>
+              <td>Image24</td>
+              <td class="text-center">96</td>
+              <td class="text-center">6</td>
+            </tr>
+            <tr>
+              <td>Image25</td>
+              <td class="text-center">96</td>
+              <td class="text-center">6</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <div class="container">
+      <div class="mt-4 text-right first">
+        <h3>
+          Thank you for completing the Color Blindness Test using the Ishihara
+          test on our website. Based on your test results, it has been
+          determined that your score is less than 13 so you have color blindness and the type of  your color blindness is <b>Protonopia</b>.
+        </h3>
+      </div>
+    </div>
+    <div class="container">
+      <div class="mt-4 text-right first">
+        <h3><b>Understanding Protonopia</b></h3>
+        <p>
+          Protonopia, also known as <b>red-green color blindness</b>, is a common type
+          of color vision deficiency. Individuals with protonopia have
+          difficulty distinguishing between certain shades of red and green.
+          This can affect how you perceive colors in everyday life, particularly
+          in the red and green spectrum.
+        </p>
+      </div>
+    </div>
+    <div class="container">
+      <div class="mt-4 text-right first">
+        <h3><b> Understanding Protonopia</b></h3>
+        <p>
+          Protonopia, also known as red-green color blindness, is a common type
+          of color vision deficiency. Individuals with protonopia have
+          difficulty distinguishing between certain shades of red and green.
+          This can affect how you perceive colors in everyday life, particularly
+          in the red and green spectrum.
+        </p>
+      </div>
+    </div>
+    <div class="container">
+      <div class="mt-4 text-right first">
+        <h3><b>Impact on Vision</b></h3>
+        <p>
+          Having protonopia might pose challenges in various situations where
+          color differentiation is important. Tasks like identifying traffic
+          lights, reading maps with color-coded information, and appreciating
+          certain artworks may be impacted.
+        </p>
+      </div>
+    </div>
+
+    <div class="container">
+      <div class="mt-4 text-right first">
+        <h3><b>Adapting and Coping</b></h3>
+        <p>
+          It's important to note that while color blindness cannot be completely
+          corrected, there are ways to navigate the challenges it presents. Many
+          individuals with protonopia learn to adapt by using context cues,
+          labels, and other visual indicators to help identify colors.
+          Additionally, there are technological tools and apps available that
+          assist in color recognition.
+        </p>
+      </div>
+    </div>
+
+    <div class="container">
+      <div class="mt-4 text-right first">
+        <h3><b> Further Steps</b></h3>
+        <p>
+          If you have concerns about how protonopia might affect your specific
+          needs, consider consulting with an eye care professional. They can
+          provide personalized guidance and advice tailored to your situation.
+        </p>
+      </div>
+    </div>
+
+    <div class="container">
+      <div class="mt-4 text-right first">
+        <h3><b> Conclusion</b></h3>
+        <p>
+          Understanding your color vision is the first step towards managing and
+          adapting to any challenges that may arise. Remember that color
+          blindness is just one aspect of your visual perception and doesn't
+          define your abilities or limit your potential.
+        </p>
+      </div>
+    </div>
+
+    <div class="last-content">
+      <div class="last">
+        <p class="terms">© 2023 Cones👁️ Ltd. All Rights Reserved</p>
+      </div>
+    </div>
+  </body>
+</html>

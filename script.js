@@ -82,7 +82,8 @@ app.post('/sign-up', async (req, res) => {
     console.log('User registered:', usermail);
 
     // Define the specific actual values you want to store
-    const specificActualValues = ['12','03', '05', '06','08','12','15','16','26','29']; // Replace with your desired values
+    const specificActualValues = ['12','08','06','29','57','05','03','15','74','02','06','97','45','05','07','16','73','nothing','nothing','nothing','nothing','26','42','35','96']; 
+    // ,'15','74','02','06','97','45','05','07','16','73','nothing','nothing','nothing','nothing'
 
     // Store the user's email and the specific actual values in your MongoDB database
     const newUser = new User({ email: usermail, actualValue: specificActualValues });
@@ -98,8 +99,6 @@ app.post('/sign-up', async (req, res) => {
   }
 });
 
-
-// Handle POST request for user sign-in with email/password
 app.get("/sign-in", async (req, res) => {
   // Check if the user is already authenticated (signed in)
   if (usermail) {
@@ -152,7 +151,8 @@ app.post('/store-google-email', async (req, res) => {
 
     if (!existingUser) {
       // If the user does not exist, create a new user document
-      const specificActualValues = ['12','03', '05', '06', '08', '35', '15', '16', '26', '29'];
+      const specificActualValues = ['12','08','06','29','57','05','03','15','74','02','06','97','45','05','07','16','73','nothing','nothing','nothing','nothing','26','42','35','96']; 
+      // ,'15','74','02','06','97','45','05','07','16','73','nothing','nothing','nothing','nothing'
       const newUser = new User({ email: userEmail, actualValue: specificActualValues });
       await newUser.save();
       console.log('New user email saved to MongoDB:', userEmail);
@@ -191,6 +191,7 @@ app.put('/store-user-input', async (req, res) => {
   }
 });
 
+
 app.put('/store-numeric-value', async (req, res) => {
   // Access the email and numeric value from the request body
   const userEmail = usermail;
@@ -211,6 +212,29 @@ app.put('/store-numeric-value', async (req, res) => {
 });
 
 
+app.put('/store-value', async (req, res) => {
+  // Access the email and numeric value from the request body
+  const userEmail = usermail;
+  const Value = req.body.Value;
+
+  console.log('Received email from client (Google sign-in):', userEmail);
+  console.log('Received numeric value from client:', Value);
+
+  try {
+    // Find the user by email and update their document to include the voice recognition value
+    await User.findOneAndUpdate({ email: userEmail }, { $push: { numericValue: Value } });
+
+    res.status(200).send('Voice recognition data received and processed.');
+  } catch (error) {
+    console.error('Error saving voice recognition data to MongoDB:', error);
+    res.status(500).send('Internal Server Error');
+  }
+});
+
+
+
+
+
 app.get('/Result1', async (req, res) => {
   try {
     // Fetch the user's data from the database
@@ -220,13 +244,34 @@ app.get('/Result1', async (req, res) => {
       return res.status(404).send('User data not found.');
     }
 
-    // Render the 'Result1' EJS template with the user data
-    res.render('Result1', { userData });
+    // Calculate the count of matching values in numericValue and actualValue
+    const count = countMatchingValues(userData.numericValue, userData.actualValue);
+
+    // Render the 'Result1' EJS template with the user data and the count
+    res.render('Result1', { userData, count });
   } catch (error) {
     console.error('Error fetching data from MongoDB:', error);
     res.status(500).send('Internal Server Error');
   }
 });
+
+// Function to count matching values
+function countMatchingValues(numericValues, actualValues) {
+  // Ensure both arrays have the same length
+  // if (numericValues.length !== actualValues.length) {
+  //   return 0; // Return 0 if the arrays are not of the same length
+  // }
+
+  let count = 0;
+
+  for (let i = 0; i < 21; i++) {
+    if (numericValues[i] === actualValues[i]) {
+      count++;
+    }
+  }
+
+  return count;
+}
 
 
 app.get('/', function (req, res) {
@@ -267,6 +312,9 @@ app.get("/Result1", function (req, res) {
 
 app.get("/Result", function (req, res) {
   res.render("Result");
+});
+app.get("/Result12", function (req, res) {
+  res.render("Result12");
 });
 
 app.listen(port, async () => {

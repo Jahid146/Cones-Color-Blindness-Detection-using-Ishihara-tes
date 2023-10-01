@@ -1,15 +1,31 @@
 
 let img = [
-  "/images/3.jpg",
-  "/images/5.jpg",
-  "/images/6.jpg",
   "/images/8.jpg",
-  "/images/35.jpg",
-  "/images/15.jpg",
-  "/images/16.jpg",
-  "/images/26.jpg",
+  "/images/6.jpg",
   "/images/29.jpg",
-  "/images/12.1.jpg"
+  "/images/57.jpg",
+  "/images/5.jpg",
+  "/images/3.jpg",
+  "/images/15.jpg",
+  "/images/74.jpg",
+  "/images/2.jpg",
+  "/images/6.1.jpg",
+  "/images/97.jpg",
+  "/images/45.jpg",
+  "/images/5.jpg",
+  "/images/7.jpg",
+  "/images/16.jpg",
+  "/images/73.jpg",
+  "/images/1.jpg",
+  "/images/2.1.jpg",
+  "/images/3.1.jpg",
+  "/images/4.jpg",
+  "/images/26.jpg",
+  "/images/42.jpg",
+  "/images/35.jpg",
+  "/images/96.jpg",
+  "/images/12.1.jpg",
+    
 ];
 let currentImageIndex = 0;
 let timer;
@@ -40,10 +56,10 @@ function voice() {
     // Check if the transcript is a valid number
     if (
       isNumber(transcript) ||
-      transcript == "nothing" ||
-      transcript == "unsure"
+      transcript == "nothing" 
+      
     ) {
-      if (isNumber(transcript)) {
+      if (isNumber(transcript)||transcript=="nothing") {
         // Create a JSON object to store the numeric value and user email
         const dataToStore = {
           numericValue: transcript,

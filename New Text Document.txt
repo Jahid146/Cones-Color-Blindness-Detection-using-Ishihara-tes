@@ -104,3 +104,39 @@ app.get("/Result1", async (req, res) => {
   }
 });
 
+
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <!-- ... (your existing head content) ... -->
+  </head>
+  <body>
+    <!-- ... (your existing body content) ... -->
+
+    <div class="d-flex justify-content-center mt-3">
+      <table class="table table-bordered small-table">
+        <thead>
+          <tr>
+            <th>Image</th>
+            <th class="text-center">Actual Number</th>
+            <th class="text-center">User Identified Number</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% userData.actualValue.forEach((actual, index) => { %>
+            <tr>
+              <td>Image <%= index + 1 %></td>
+              <td class="text-center"><%= actual %></td>
+              <td class="text-center"><%= userData.numericValue[index] %></td>
+            </tr>
+          <% }); %>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- ... (your existing content) ... -->
+  </body>
+</html>
+
+

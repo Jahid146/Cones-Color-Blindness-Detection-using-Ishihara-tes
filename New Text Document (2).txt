@@ -121,29 +121,6 @@ document.addEventListener("DOMContentLoaded", function () {
     if (userInput !== '' && !doneClicked) {
       doneClicked = true;
       console.log("User input:", userInput);
-      const dataToStore = {
-        Value: userInput,
-      };
-
-      const jsonStr = JSON.stringify(dataToStore);
-
-      fetch('/store-value', {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: jsonStr,
-      })
-        .then((response) => {
-          if (response.ok) {
-            console.log("Numeric value successfully sent to server");
-          } else {
-            console.error('Failed to send numeric value to server');
-          }
-        })
-        .catch((error) => {
-          console.error('Error sending numeric value to server:', error);
-        });
       currentImageIndex = (currentImageIndex + 1) % images.length;
       updateImage();
       buttonClicks = 0;

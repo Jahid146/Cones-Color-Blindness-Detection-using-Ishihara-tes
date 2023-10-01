@@ -36,7 +36,7 @@ function submitForm() {
       });
   } else {
     // Redirect to "/result" if the input is not equal to "12"
-    window.location.href = "/result";
+    window.location.href = "/Result12";
   }
 }
 
