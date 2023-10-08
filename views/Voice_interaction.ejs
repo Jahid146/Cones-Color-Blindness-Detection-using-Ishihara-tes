@@ -60,9 +60,10 @@
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
           <ul class="navbar-nav ms-auto">
             <li class="nav-item">
-              <a class="a_style" href="/"
-                ><button type="button" class="nav-link">Exit</button></a
-              >
+              <a class="a_style" href="/">
+                <button type="button" id="exitButton1" class="nav-link">
+                  Exit
+                </button></a>
             </li>
             <li class="nav-item">
               <a class="a_style" href="/Voice_interaction?restart=true">
@@ -130,11 +131,21 @@
     <script>
       $(document).ready(function () {
         // Add a click event handler for the "Restart" button
-        $('#restartButton1').click(function () {
+        $("#restartButton1").click(function () {
           // Send a POST request to the /restart endpoint
-          $.post('/restart', function (data) {
+          $.post("/restart", function (data) {
             // Reload the page after clearing numericValue
             location.reload();
+          });
+        });
+    
+        // Add a click event handler for the "Exit" button
+        $("#exitButton1").click(function () {
+          // Send a POST request to the /exit endpoint (replace with your actual endpoint)
+          $.post("/exit", function (data) {
+            // Handle the response as needed
+            // For example, you can redirect the user to another page
+            window.location.href = "/"; // Replace with the appropriate URL
           });
         });
       });

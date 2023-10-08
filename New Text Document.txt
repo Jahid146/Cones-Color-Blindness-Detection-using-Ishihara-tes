@@ -1,142 +1,95 @@
-app.post('/store-numeric-value', async (req, res) => {
-  // Access the email and numeric value from the request body
-  const userEmail = usermail;
-  const numericValue = req.body.numericValue;
-
-  console.log('Received email from client (Google sign-in):', userEmail);
-  console.log('Received numeric value from client:', numericValue);
-
-  try {
-    // Find the user by email and update their document to include the voice recognition value
-    await User.findOneAndUpdate({ email: userEmail }, { $push: { numericValue: numericValue } });
-
-    // Redirect to the result page after successfully saving the values
-    res.redirect('/result');
-  } catch (error) {
-    console.error('Error saving voice recognition data to MongoDB:', error);
-    res.status(500).send('Internal Server Error');
-  }
-});
-
-
-
 <!DOCTYPE html>
-<html>
-  <head>
-    <!-- ... (head section code) ... -->
-  </head>
-  <body>
-    <div class="header">
-      <!-- ... (header code) ... -->
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your Web App</title>
+    <!-- Include Bootstrap CSS and any other necessary CSS libraries -->
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <div class="container">
+            <a class="navbar-brand" href="/">Your App</a>
+            <div id="user-profile-nav"></div>
+        </div>
+    </nav>
+    
+    <div class="container mt-4" id="userFormContainer">
+        <!-- Your content goes here -->
+        <!-- This container will be shown or hidden based on the user's authentication state -->
     </div>
+    
+    <!-- Include Firebase SDK and any other necessary scripts -->
+    <script src="https://www.gstatic.com/firebasejs/8.2.6/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.2.6/firebase-auth.js"></script>
+    <script>
+        const firebaseConfig = {
+            apiKey: "YOUR_API_KEY",
+            authDomain: "YOUR_AUTH_DOMAIN",
+            projectId: "YOUR_PROJECT_ID",
+            storageBucket: "YOUR_STORAGE_BUCKET",
+            messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
+            appId: "YOUR_APP_ID"
+        };
 
-    <div class="container">
-      <h1 class="mt-4 text-right her">
-        Here is the result of your Ishihara test:
-      </h1>
-      <div class="d-flex justify-content-center mt-3">
-        <table class="table table-bordered small-table">
-          <thead>
-            <tr>
-              <th>Image</th>
-              <th class="text-center">Actual Number</th>
-              <th class="text-center">User Identified Number</th>
-            </tr>
-          </thead>
-          <tbody>
-            <% userData.numericValue.forEach((value, index) => { %>
-              <tr>
-                <td>Image<%= index + 1 %></td>
-                <td class="text-center"><%= userData.actualValue[index] %></td>
-                <td class="text-center"><%= value %></td>
-              </tr>
-            <% }); %>
-          </tbody>
-        </table>
-      </div>
-    </div>
-    <div class="container">
-      <div class="mt-4 text-right first">
-        <!-- ... (rest of the content) ... -->
-      </div>
-    </div>
+        const app = firebase.initializeApp(firebaseConfig);
+        const auth = app.auth();
 
-    <div class="last-content">
-      <!-- ... (footer code) ... -->
-    </div>
-  </body>
+        auth.onAuthStateChanged((user) => {
+            const userProfileNav = document.getElementById("user-profile-nav");
+            if (user) {
+                // If user is authenticated (logged in)
+                const profileImageURL = user.photoURL || "/images/user.jpg";
+
+                userProfileNav.innerHTML = `
+                    <div class="dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" role="button" id="userDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                            <img src="${profileImageURL}" alt="User Profile Image" class="user-image rounded-circle">
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="userDropdown">
+                            <li class="text-center">${user.email}</li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li><a class="dropdown-item" href="#" onclick="handleSignOut()">Log Out</a></li>
+                        </ul>
+                    </div>
+                `;
+            } else if (userEmail) {
+                // If user is authenticated (logged in) with email
+                const profileImageURL = "/images/user.jpg"; // Use a default image or fetch user's profile image
+                const userEmail = '<%= userEmail %>';
+
+                userProfileNav.innerHTML = `
+                    <div class="dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" role="button" id="userDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                            <img src="${profileImageURL}" alt="User Profile Image" class="user-image rounded-circle">
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="userDropdown">
+                            <li class="text-center">${userEmail}</li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li><a class="dropdown-item" href="#" onclick="handleSignOut()">Log Out</a></li>
+                        </ul>
+                    </div>
+                `;
+            } else {
+                // If user is not authenticated (logged out)
+                userProfileNav.innerHTML = `
+                    <a class="nav-link" href="/sign-up">Log in/Sign up</a>
+                `;
+            }
+        });
+
+        // Function to handle user sign-out
+        function handleSignOut() {
+            auth.signOut().then(() => {
+                // Redirect or perform necessary actions after sign-out
+            });
+        }
+    </script>
+    
+    <!-- Include Bootstrap JS and any other necessary JS libraries -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
 </html>
-
-
-
-app.post('/store-numeric-value', async (req, res) => {
-  // Access the email and numeric value from the request body
-  const userEmail = usermail;
-  const numericValue = req.body.numericValue;
-
-  console.log('Received email from client (Google sign-in):', userEmail);
-  console.log('Received numeric value from client:', numericValue);
-
-  try {
-    // Find the user by email and update their document to include the voice recognition value
-    await User.findOneAndUpdate({ email: userEmail }, { $push: { numericValue: numericValue } });
-
-    // Redirect to the result page after successfully saving the values
-    res.redirect('/Result1');
-  } catch (error) {
-    console.error('Error saving voice recognition data to MongoDB:', error);
-    res.status(500).send('Internal Server Error');
-  }
-});
-
-
-
-app.get("/Result1", async (req, res) => {
-  try {
-    // Replace this with code to fetch user-specific data from MongoDB
-    const userData = await User.findOne({ email: usermail }); // Assuming you can find user data by their email
-
-    // Pass the fetched data to the EJS template for rendering
-    res.render('Result1', { userData });
-  } catch (error) {
-    console.error('Error fetching data from MongoDB:', error);
-    res.status(500).send('Internal Server Error');
-  }
-});
-
-
-
-<!DOCTYPE html>
-<html>
-  <head>
-    <!-- ... (your existing head content) ... -->
-  </head>
-  <body>
-    <!-- ... (your existing body content) ... -->
-
-    <div class="d-flex justify-content-center mt-3">
-      <table class="table table-bordered small-table">
-        <thead>
-          <tr>
-            <th>Image</th>
-            <th class="text-center">Actual Number</th>
-            <th class="text-center">User Identified Number</th>
-          </tr>
-        </thead>
-        <tbody>
-          <% userData.actualValue.forEach((actual, index) => { %>
-            <tr>
-              <td>Image <%= index + 1 %></td>
-              <td class="text-center"><%= actual %></td>
-              <td class="text-center"><%= userData.numericValue[index] %></td>
-            </tr>
-          <% }); %>
-        </tbody>
-      </table>
-    </div>
-
-    <!-- ... (your existing content) ... -->
-  </body>
-</html>
-
-

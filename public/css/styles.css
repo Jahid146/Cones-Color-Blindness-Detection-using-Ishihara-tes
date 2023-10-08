@@ -151,6 +151,73 @@
   text-align: center; /* Center the email address */
   padding: 0.5rem; /* Add padding to the dropdown menu */
 }
+/* Styling for the dropdown menu */
+.dropdown {
+  position: relative;
+  display: inline-block;
+  margin-right: 20px; /* Add margin for spacing */
+}
+
+/* Styling for the user profile image and name */
+.user-profile {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  text-decoration: none;
+  color: #333; /* Text color */
+}
+
+.user-image {
+  width: 50px; /* Adjust the size as needed */
+  height: 50px;
+  border-radius: 50%;
+  margin-bottom: 5px; /* Spacing between image and name */
+}
+
+.user-name {
+  font-weight: bold;
+}
+
+/* Styling for the user email in the dropdown */
+.user-info {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding: 10px 20px; /* Adjust padding as needed */
+}
+
+.user-email {
+  font-size: 14px; /* Adjust font size as needed */
+  color: #777; /* Text color */
+}
+
+/* Styling for the dropdown menu items */
+.dropdown-menu {
+  min-width: 200px; /* Adjust the width as needed */
+  padding: 10px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Add a subtle shadow */
+}
+
+.dropdown-divider {
+  margin: 5px 0;
+  border-color: #ddd; /* Divider color */
+}
+
+.dropdown-item {
+  color: #333; /* Text color */
+  transition: background-color 0.3s ease; /* Smooth transition on hover */
+}
+
+.dropdown-item:hover {
+  background-color: #f8f8f8; /* Background color on hover */
+}
+
+/* Styling for the log out link */
+.dropdown-item.logout {
+  color: #e74c3c; /* Logout link color */
+}
 
 .user-email {
   word-wrap: break-word; /* Wrap long email addresses */

@@ -1,35 +1,6 @@
-**Understanding Your Test Results**
-
-Thank you for taking the Color Blindness Test using the Ishihara test on our website. Based on your test results, we want to inform you that your score falls within the range of 14 to 16. While this indicates that you may have a mild form of color vision deficiency, it's important to understand that:
-
-**Seeking Professional Guidance**
-
-Color vision deficiency can vary in severity, and some individuals with mild color vision deficiency may not experience significant difficulties in daily life. If you have concerns about your color vision, we recommend consulting with an eye care professional for a more comprehensive evaluation.
-
-**Embracing Your Unique Abilities**
-
-Remember that color vision deficiency doesn't define your abilities or limit your potential. Many individuals with color vision deficiency lead successful and fulfilling lives. If you have any questions or need further guidance, please don't hesitate to reach out to us or seek professional advice.
-
-
-
-**Conclusion**
-
-In summary, your test results indicate mild color vision deficiency, falling between scores 14 to 16. While this may affect your perception of colors to some extent, it doesn't define your abilities. Remember, your unique qualities and potential extend beyond color perception. Seek professional guidance if needed, and feel free to reach out if you have any questions. Your vision journey is just one part of your remarkable story, and we're here to support you.
-
-
-
-**Understanding Your Color Vision Results**
-
-Thank you for completing the Color Blindness Test using the Ishihara test on our website. Your test results indicate that you may have color vision deficiency; however, it's important to note that the Ishihara test can identify the presence of color vision deficiency but cannot determine the specific type (e.g., Protonopia or Deuteranopia).
-
-**Seeking Professional Evaluation**
-
-Color vision deficiency can manifest in various forms, and it's essential to understand the specific nature of your condition for accurate guidance and management. To gain a precise diagnosis and tailor-made advice, we strongly recommend scheduling an appointment with an eye care professional or an optometrist. They can conduct a comprehensive evaluation and provide you with insights into the type and severity of your color vision deficiency.
-
-**Embracing Your Unique Abilities**
-
-Please remember that a diagnosis of color vision deficiency doesn't define your abilities or limit your potential. Many individuals with various forms of color vision deficiency lead successful and fulfilling lives in various fields. Seeking professional guidance will enable you to better understand your condition and explore strategies to enhance your color perception if necessary.
-
-**Conclusion**
-
-If you have any questions or need assistance in finding an eye care specialist, please don't hesitate to reach out to us. Your visual well-being is our priority, and we are here to support you on your journey to clearer and more vibrant vision.
+const dataToStore = {
+  numericValue: userInput,
+};
+  
+// Convert the JSON object to a string
+const jsonStr = JSON.stringify(dataToStore);

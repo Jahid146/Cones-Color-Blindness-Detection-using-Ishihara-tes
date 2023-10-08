@@ -21,6 +21,7 @@
     <script src="https://www.gstatic.com/firebasejs/9.0.1/firebase-auth.js"></script>
     <script src="script.js"></script>
     <script src="/script/first_image.js"></script>
+  
 </head>
 <body>
     <div class="first">
@@ -146,28 +147,95 @@
 
       const app = firebase.initializeApp(firebaseConfig);
       const auth = app.auth(); // Get the Auth instance
+      const numberOfNumericValues = '<%= numberOfNumericValues %>';
+
+      
 
       auth.onAuthStateChanged((user) => {
   const userProfileNav = document.getElementById("user-profile-nav");
-  if (user) {
+  if (user && numberOfNumericValues==0) {
     // If user is authenticated (logged in)
+    
     const profileImageURL = user.photoURL || "/images/user.jpg" ;
     console.log(profileImageURL)
     
 
     userProfileNav.innerHTML = `
-      <div class="dropdown">
-          <a class="nav-link dropdown-toggle" href="#" role="button" id="userDropdown" data-bs-toggle="dropdown" aria-expanded="false">
-              <img src="${profileImageURL}" alt="User Profile Image" class="user-image rounded-circle">
-          </a>
-          <ul class="dropdown-menu" aria-labelledby="userDropdown">
-              <li class="text-center">${user.email}</li>
-              <li><hr class="dropdown-divider"></li>
-              <li><a class="dropdown-item" href="#" onclick="handleSignOut()">Log Out</a></li>
-          </ul>
-      </div>
+    <div class="dropdown">
+    <a class="nav-link dropdown-toggle" href="#" role="button" id="userDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+        <div class="user-profile">
+            <img src="${profileImageURL}" alt="User Profile Image" class="user-image rounded-circle">
+            
+        </div>
+    </a>
+    <ul class="dropdown-menu" aria-labelledby="userDropdown">
+        <li class="user-info text-center">
+            <img src="${profileImageURL}" alt="User Profile Image" class="user-image rounded-circle">
+            <span class="user-email">${user.email}</span>
+        </li>
+        <li><hr class="dropdown-divider"></li>
+        <li><a class="dropdown-item" href="#" onclick="handleSignOut()">Log Out</a></li>
+    </ul>
+</div>
+
     `;
-  } else {
+    
+  } 
+  else if(user && numberOfNumericValues!=25 && numberOfNumericValues!=0){
+    const profileImageURL = user.photoURL || "/images/user.jpg" ;
+    console.log(profileImageURL)
+    
+
+    userProfileNav.innerHTML = `
+    <div class="dropdown">
+    <a class="nav-link dropdown-toggle" href="#" role="button" id="userDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+        <div class="user-profile">
+            <img src="${profileImageURL}" alt="User Profile Image" class="user-image rounded-circle">
+            
+        </div>
+    </a>
+    <ul class="dropdown-menu" aria-labelledby="userDropdown">
+        <li class="user-info text-center">
+            <img src="${profileImageURL}" alt="User Profile Image" class="user-image rounded-circle">
+            <span class="user-email">${user.email}</span>
+        </li>
+        <li><hr class="dropdown-divider"></li>
+        <li><a class="dropdown-item" href="#" onclick="handleResult1()">See Result</a></li>
+        <li><a class="dropdown-item" href="#" onclick="handleSignOut()">Log Out</a></li>
+    </ul>
+</div>
+
+    `;
+
+  }
+  else if(user && numberOfNumericValues==25){
+    const profileImageURL = user.photoURL || "/images/user.jpg" ;
+    console.log(profileImageURL)
+    
+
+    userProfileNav.innerHTML = `
+    <div class="dropdown">
+    <a class="nav-link dropdown-toggle" href="#" role="button" id="userDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+        <div class="user-profile">
+            <img src="${profileImageURL}" alt="User Profile Image" class="user-image rounded-circle">
+            
+        </div>
+    </a>
+    <ul class="dropdown-menu" aria-labelledby="userDropdown">
+        <li class="user-info text-center">
+            <img src="${profileImageURL}" alt="User Profile Image" class="user-image rounded-circle">
+            <span class="user-email">${user.email}</span>
+        </li>
+        <li><hr class="dropdown-divider"></li>
+        <li><a class="dropdown-item" href="#" onclick="handleResult()">See Result</a></li>
+        <li><a class="dropdown-item" href="#" onclick="handleSignOut()">Log Out</a></li>
+    </ul>
+</div>
+
+    `;
+
+  }
+  else {
     // If user is not authenticated (logged out)
     userProfileNav.innerHTML = `
       <a class="nav-link" href="/sign-up">Log in/Sign up</a>
@@ -175,33 +243,49 @@
   }
 });
 
-  // Function to handle user sign-out
-  function handleSignOut() {
-    auth.signOut().then(() => {
-      // Redirect or perform necessary actions after sign-out
-    });
-  }
+
+// Function to handle user sign-out
+function handleSignOut() {
+  auth.signOut().then(() => {
+    // Redirect or perform necessary actions after sign-out
+  });
+}
+
+// Function to handle the "See Result" button click
+function handleResult() {
+  // Redirect the user to the desired page
+  window.location.href = '/Result1'; // Replace '/result-page' with the actual URL of the result page
+}
+
+function handleResult1() {
+  // Redirect the user to the desired page
+  window.location.href = '/opps'; // Replace '/result-page' with the actual URL of the result page
+}
 
 
-  auth.onAuthStateChanged((user) => {
+
+auth.onAuthStateChanged((user) => {
         const userFormContainer = document.getElementById("userFormContainer");
 
-        if (user) {
+        if (user && numberOfNumericValues==0) {
           // If user is authenticated (logged in), show the form container
           userFormContainer.style.display = "block";
           // Add any additional logic for authenticated users here
-        } else {
+        } 
+        else if(user && numberOfNumericValues==25){
+          userFormContainer.style.display = "none";
+        }
+        else if(user && numberOfNumericValues!=25 && numberOfNumericValues!=0){
+          userFormContainer.style.display = "none";
+        }
+        else {
           // If user is not authenticated (logged out), hide the form container
           userFormContainer.style.display = "none";
           // Add any additional logic for non-authenticated users here
         }
       });
 
-
-
-
-
-    </script>
+</script>
 
 </body>
 </html>

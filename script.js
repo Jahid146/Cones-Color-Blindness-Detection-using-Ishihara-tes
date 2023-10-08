@@ -5,10 +5,28 @@ const { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword } = 
 const mongoose = require('mongoose');
 const app = express();
 app.use(express.json());
+const crypto = require("crypto");
+const session = require('express-session');
 const port = process.env.PORT || 3000;
 let usermail;
+let usermail2;
+let numberOfNumericValues;
 
 
+const generateSecretKey = () => {
+  const secretLength = 64; // You can adjust the length as needed
+  return crypto.randomBytes(secretLength).toString("hex");
+};
+const secretKey = generateSecretKey();
+
+app.use(
+  session({
+    secret: secretKey,
+    resave: false,
+    saveUninitialized: true,
+    cookie: { secure: false, maxAge: 1*60*1000 }, // Modify the cookie options as needed
+  })
+);
 
 
 // User schema
@@ -17,14 +35,20 @@ const userSchema = new mongoose.Schema({
     type: String,
     unique: true,
   },
-  numericValue: [{
-    type: String,
-    
-  }],
+  numericValue: {
+    type: [String],
+    validate: [arrayLimit, '{PATH} exceeds the limit of 21'],
+  },
   actualValue: [{
     type: String,
-      }],
+  }],
 });
+
+// Validation function for array length
+function arrayLimit(val) {
+  return val.length <= 25;
+}
+
 
 
 // User Model
@@ -65,88 +89,39 @@ const firebaseConfig = {
 const appFirebase = initializeApp(firebaseConfig);
 const auth = getAuth(appFirebase);
 
-// Handle POST request for user registration with email/password
-// app.post('/sign-up', async (req, res) => {
-//   const email = req.body.email1;
-//   const password = req.body.password1;
-//   const confirmPassword = req.body.confirm_password1;
 
-//   if (password !== confirmPassword) {
-//     return res.redirect('/sign-up');
-//   }
-
-//   try {
-//     const userCredential = await createUserWithEmailAndPassword(auth, email, password);
-//     const user = userCredential.user;
-//     usermail = user.email;
-//     console.log('User registered:', usermail);
-
-//     // Define the specific actual values you want to store
-//     const specificActualValues = ['12','08','06','29','57','05','03','15','74','02','06','97','45','05','07','16','73','nothing','nothing','nothing','nothing','26','42','35','96']; 
-//     // ,'15','74','02','06','97','45','05','07','16','73','nothing','nothing','nothing','nothing'
-
-//     // Store the user's email and the specific actual values in your MongoDB database
-//     const newUser = new User({ email: usermail, actualValue: specificActualValues });
-//     await newUser.save();
-
-//     res.redirect('/sign-in'); // Redirect after successful registration
-
-//   } catch (error) {
-//     const errorCode = error.code;
-//     const errorMessage = error.message;
-//     console.error('Registration error:', errorCode, errorMessage);
-//     res.redirect('/sign-up'); // Redirect with an error message, if needed
-//   }
-// });
-
-app.get("/sign-in", async (req, res) => {
-  // Check if the user is already authenticated (signed in)
-  if (usermail) {
-    // User is already signed in, redirect to the home page
-    res.redirect('/'); // Replace '/home-page' with your actual home page URL
-  } else {
-    // User is not signed in, render the sign-in page
-    res.render("sign-in");
-  }
-});
-
-app.post('/sign-in', async (req, res) => {
-  const email = req.body.email;
-  const password = req.body.password;
+app.post('/store', async (req, res) => {
+  // Access the email from the request body
+  const userEmail = req.body.email;
+  usermail = userEmail; // Use 'email' here
 
   try {
-    const userCredential = await signInWithEmailAndPassword(auth, email, password);
-    const user = userCredential.user;
-    usermail = user.email;
-    console.log('User signed in:', usermail);
+    // Try to find an existing user document with the same email
+    const existingUser = await User.findOne({ email: userEmail });
 
-    // Check if the user's email exists in the database
-    const existingUser = await User.findOne({ email: usermail });
-
-    if (existingUser) {
-       console.log('User already exists in MongoDB:', usermail);
-      
-      // Redirect to the homepage for returning users
-      res.redirect('/');
-    } else {
+    if (!existingUser) {
       // If the user does not exist, create a new user document
       const specificActualValues = ['12','08','06','29','57','05','03','15','74','02','06','97','45','05','07','16','73','nothing','nothing','nothing','nothing','26','42','35','96']; 
       // ,'15','74','02','06','97','45','05','07','16','73','nothing','nothing','nothing','nothing'
-      const newUser = new User({ email: usermail, actualValue: specificActualValues });
+      const newUser = new User({ email: userEmail, actualValue: specificActualValues });
       await newUser.save();
-      console.log('New user email saved to MongoDB:', usermail);
+      console.log('New user email saved to MongoDB:', userEmail);
+      numberOfNumericValues = 0;
       
       // Redirect to the choose_option page for first-time users
       res.redirect('/');
+    } else {
+      console.log('User already exists in MongoDB:', userEmail);
+      numberOfNumericValues = existingUser.numericValue.length;
+      
+      // Redirect to the homepage for returning users
+      res.redirect('/');
     }
   } catch (error) {
-    const errorCode = error.code;
-    const errorMessage = error.message;
-    console.error('Sign-in error:', errorCode, errorMessage);
-    res.redirect('/sign-in'); // Redirect with an error message, if needed
+    console.error('Error saving user email to MongoDB:', error);
+    res.status(500).send('Internal Server Error');
   }
 });
-
 
 
 app.post('/store-google-email', async (req, res) => {
@@ -165,11 +140,44 @@ app.post('/store-google-email', async (req, res) => {
       const newUser = new User({ email: userEmail, actualValue: specificActualValues });
       await newUser.save();
       console.log('New user email saved to MongoDB:', userEmail);
+      numberOfNumericValues = 0;
       
       // Redirect to the choose_option page for first-time users
       res.redirect('/');
     } else {
       console.log('User already exists in MongoDB:', userEmail);
+    
+      // Access the numericValue array and get its length
+       numberOfNumericValues = existingUser.numericValue.length;
+    
+      // Redirect to the homepage for returning users and pass the number of values as a query parameter
+      res.redirect('/');
+    }
+    
+  } catch (error) {
+    console.error('Error saving user email to MongoDB:', error);
+    res.status(500).send('Internal Server Error');
+  }
+});
+app.post('/store-email', async (req, res) => {
+  // Access the email from the request body
+  const userEmail = req.body.email1;
+  usermail = userEmail; // Use 'email' here
+
+  try {
+    // Try to find an existing user document with the same email
+    const existingUser = await User.findOne({ email: userEmail });
+
+    if (!existingUser) {
+      
+      console.log('New user email saved to MongoDB:', userEmail);
+      numberOfNumericValues = 0;
+      
+      // Redirect to the choose_option page for first-time users
+      res.redirect('/');
+    } else {
+      console.log('User already exists in MongoDB:', userEmail);
+      numberOfNumericValues = existingUser.numericValue.length;
       
       // Redirect to the homepage for returning users
       res.redirect('/');
@@ -178,6 +186,11 @@ app.post('/store-google-email', async (req, res) => {
     console.error('Error saving user email to MongoDB:', error);
     res.status(500).send('Internal Server Error');
   }
+});
+
+
+app.get('/', function (req, res) {
+  res.render('index', { numberOfNumericValues: numberOfNumericValues });
 });
 
 
@@ -267,6 +280,32 @@ app.post('/restart', async (req, res) => {
 });
 
 
+app.post('/exit', async (req, res) => {
+  const userEmail = usermail; // Replace this with your actual user identification logic
+
+  try {
+    // Find the user by email and get their document
+    const user = await User.findOne({ email: userEmail });
+
+    if (!user) {
+      return res.status(404).send('User not found.');
+    }
+
+    // Clear all values in the numericValue array
+    user.numericValue = [];
+
+    // Save the updated user document
+    await user.save();
+
+    // Redirect to the exit page or any other appropriate action
+    res.redirect('/'); // Replace with the appropriate URL or action
+  } catch (error) {
+    console.error('Error clearing numericValue data:', error);
+    res.status(500).send('Internal Server Error');
+  }
+});
+
+
 
 
 
@@ -308,6 +347,30 @@ function countMatchingValues(numericValues, actualValues) {
   return count;
 }
 
+// app.post('/tryagain', async (req, res) => {
+//   const userEmail = usermail;
+
+//   try {
+//     // Find the user by email and get their document
+//     const user = await User.findOne({ email: userEmail });
+
+//     if (!user) {
+//       return res.status(404).send('User not found.');
+//     }
+
+//     // Keep the first numericValue and clear the rest
+//     user.numericValue = user.numericValue.slice(0, 1);
+
+//     // Save the updated user document
+//     await user.save();
+
+//     // Redirect to the current page
+//     res.redirect('/choose_option');
+//   } catch (error) {
+//     console.error('Error clearing numericValue data:', error);
+//     res.status(500).send('Internal Server Error');
+//   }
+// });
 
 app.get('/', function (req, res) {
   res.render('index');
@@ -350,6 +413,9 @@ app.get("/Result", function (req, res) {
 });
 app.get("/Result12", function (req, res) {
   res.render("Result12");
+});
+app.get("/opps", function (req, res) {
+  res.render("opps");
 });
 
 app.listen(port, async () => {

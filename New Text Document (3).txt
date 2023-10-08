@@ -1,64 +1,94 @@
+<!-- Inside your "calculator" HTML -->
+<div class="center">
+  <!-- Rest of your calculator content -->
+
+  <!-- Add the "Restart" button -->
+  <button type="button" id="restartButton" class="button">Restart</button>
+</div>
+
+
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
-  const firebaseConfig = {
-    apiKey: "Your-API-Key",
-    authDomain: "Your-Auth-Domain",
-    projectId: "Your-Project-ID",
-    storageBucket: "Your-Storage-Bucket",
-    messagingSenderId: "Your-Messaging-Sender-ID",
-    appId: "Your-App-ID",
-  };
-
-  const app = firebase.initializeApp(firebaseConfig);
-  const auth = app.auth(); // Get the Auth instance
-
-  auth.onAuthStateChanged((user) => {
-    const userProfileNav = document.getElementById("user-profile-nav");
-    const defaultImageURL = "/default-profile-image.png"; // Set your default image URL here
-
-    if (user) {
-      // If user is authenticated (logged in)
-      const profileImageURL = user.photoURL || defaultImageURL;
-
-      userProfileNav.innerHTML = `
-        <div class="dropdown">
-            <a class="nav-link dropdown-toggle" href="#" role="button" id="userDropdown" data-bs-toggle="dropdown" aria-expanded="false">
-                <img src="${profileImageURL}" alt="User Profile Image" class="user-image rounded-circle">
-            </a>
-            <ul class="dropdown-menu" aria-labelledby="userDropdown">
-                <li class="text-center">${user.email}</li>
-                <li><hr class="dropdown-divider"></li>
-                <li><a class="dropdown-item" href="#" onclick="handleSignOut()">Log Out</a></li>
-            </ul>
-        </div>
-      `;
-    } else {
-      // If user is not authenticated (logged out), use the default image
-      userProfileNav.innerHTML = `
-        <a class="nav-link" href="/sign-up">
-            <img src="${defaultImageURL}" alt="User Profile Image" class="user-image rounded-circle">
-        </a>
-      `;
-    }
-  });
-
-  // Function to handle user sign-out
-  function handleSignOut() {
-    auth.signOut().then(() => {
-      // Redirect or perform necessary actions after sign-out
+  $(document).ready(function () {
+    // Add a click event handler for the "Restart" button
+    $('#restartButton').click(function () {
+      // Send a POST request to the /restart endpoint
+      $.post('/restart', function (data) {
+        // Reload the page after clearing numericValue
+        location.reload();
+      });
     });
-  }
-
-  auth.onAuthStateChanged((user) => {
-    const userFormContainer = document.getElementById("userFormContainer");
-
-    if (user) {
-      // If user is authenticated (logged in), show the form container
-      userFormContainer.style.display = "block";
-      // Add any additional logic for authenticated users here
-    } else {
-      // If user is not authenticated (logged out), hide the form container
-      userFormContainer.style.display = "none";
-      // Add any additional logic for non-authenticated users here
-    }
   });
 </script>
+
+
+app.post('/restart', async (req, res) => {
+  const userEmail = usermail;
+
+  try {
+    // Find the user by email and update their document to reset the numericValue array
+    await User.findOneAndUpdate({ email: userEmail }, { $set: { numericValue: [] } });
+
+    // Render the current page again
+    res.render('calculator');
+  } catch (error) {
+    console.error('Error clearing numericValue data:', error);
+    res.status(500).send('Internal Server Error');
+  }
+});
+
+
+
+
+<li class="nav-item">
+  <a class="a_style" href="/calculator">
+    <button type="button" class="nav-link">Restart</button>
+  </a>
+</li>
+
+
+
+
+
+
+
+
+<a class="a_style" href="/Voice_interaction?restart=true">
+  <button type="button" class="nav-link">Restart</button>
+</a>
+
+
+
+
+// Get the URL query parameters
+const urlParams = new URLSearchParams(window.location.search);
+const isRestart = urlParams.get('restart');
+
+// Function to clear all values except the first one
+function clearValues() {
+  // Your logic to clear values goes here
+  // For example, if you have an array of values:
+  // valuesArray = valuesArray.slice(0, 1);
+}
+
+// Check if it's a restart action
+if (isRestart === 'true') {
+  // Clear values when the page loads
+  clearValues();
+}
+<script src="/script/cal.js"></script> <!-- Your previous script code -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+  $(document).ready(function () {
+    // Add a click event handler for the "Restart" button
+    $('#restartButton').click(function () {
+      // Send a POST request to the /restart endpoint
+      $.post('/restart', function (data) {
+        // Reload the page after clearing numericValue
+        location.reload();
+      });
+    });
+  });
+</script>
+

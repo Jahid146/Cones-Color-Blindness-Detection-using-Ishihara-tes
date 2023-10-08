@@ -36,6 +36,7 @@
 
     <!-- my javascript -->
     <script src="script.js"></script>
+    
   </head>
   <body>
     <div class="header">
@@ -133,7 +134,7 @@
 
       const app = firebase.initializeApp(firebaseConfig);
       const auth = app.auth(); // Get the Auth instance
-      let userEmail;
+      // let userEmail;
       // Function to initiate Google authentication
       // Function to initiate Google authentication and send email to the server
       // Function to handle form submission
@@ -149,10 +150,31 @@
           .then((userCredential) => {
             // Registration successful, user is signed in
             const user = userCredential.user;
-            console.log("User registered:", user);
+            
 
-            // Redirect to the sign-in page
-            window.location.href = "/sign-in";
+            // Send the email to your Node.js server using a POST request
+            fetch("/store", {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify({ email: email }), // Send the email as data
+            })
+              .then((response) => {
+                // Handle the response from the server
+                if (response.ok) {
+                  console.log("Email stored successfully");
+                  // Redirect to the sign-in page or any other page as needed
+                  window.location.href = "/";
+                } else {
+                  console.error("Failed to store email on server");
+                  // Handle the error
+                }
+              })
+              .catch((error) => {
+                console.error("Error storing email on server:", error);
+                // Handle the error
+              });
           })
           .catch((error) => {
             // Handle registration error
@@ -160,7 +182,6 @@
             // Display an error message to the user if needed
           });
       }
-
       // Find the sign-up form by its ID
       const signUpForm = document.getElementById("signUpForm");
 
@@ -177,7 +198,7 @@
           .signInWithPopup(provider)
           .then((result) => {
             // Handle successful sign-in
-            userEmail = result.user.email; // Get the user's email
+            let userEmail = result.user.email; // Get the user's email
             console.log("Google user signed in:", userEmail);
 
             // Send the email to your Node.js server using a POST request
